@@ -18,6 +18,16 @@ const quizForm = document.getElementById('quizForm');
 const quizDialog = document.getElementById('quizDialog');
 const submitBtn = document.getElementById('submitBtn');
 const p = document.getElementById('p');
+const p2 = document.getElementById('p2');
+const p3 = document.getElementById('p3');
+const p4 = document.getElementById('p4');
+const p5 = document.getElementById('p5');
+const p6 = document.getElementById('p6');
+const p7 = document.getElementById('p7');
+const p8 = document.getElementById('p8');
+const p9 = document.getElementById('p9');
+const p10 = document.getElementById('p10');
+const p11 = document.getElementById('p11');
 const replay = document.getElementById("replay");
 let selectedPrompts = [];
 let selectedCards = [];
@@ -27,7 +37,7 @@ let redCardsTotal = 0;
 let blueCardsTotal = 0;
 let redCardsRevealed = 0;
 let blueCardsRevealed = 0;
-const ws = new WebSocket('wss://notesecrets.onrender.com');
+const ws = new WebSocket('ws://192.168.94.94:3000');
 ws.onopen = function (event) {
     ws.send(JSON.stringify({ type: "更新教室", room: sessionStorage.getItem('room'), id: sessionStorage.getItem('id') }));
 }
@@ -53,6 +63,13 @@ ws.onmessage = function (event) {
                 }
                 cardContainer.innerHTML = "";
                 if (position == "A班老師") {
+                    p2.innerHTML="A班";
+                    p2.classList.add("red");
+                    p3.innerHTML="老師";
+                    p4.innerHTML="，請選擇";
+                    p5.innerHTML="紅色";
+                    p5.classList.add("red");
+                    p6.innerHTML="考卷作為答案";
                     if (data.ifgaming == 1) {
                         if (gamecard.state < 3.5 && gamecard.state % 2 == 0) {
                             if (gamecard.redCount > gamecard.blueCount) {
@@ -122,6 +139,13 @@ ws.onmessage = function (event) {
                         promptButtonsContainer.appendChild(categoryDiv);
                     });
                 } else if (position == "B班老師") {
+                    p2.innerHTML="B班";
+                    p2.classList.add("blue");
+                    p3.innerHTML="老師";
+                    p4.innerHTML="，請選擇";
+                    p5.innerHTML="藍色";
+                    p5.classList.add("blue");
+                    p6.innerHTML="考卷作為答案";
                     if (data.ifgaming == 1) {
                         if (gamecard.state < 3.5 && gamecard.state % 2 == 0) {
                             if (gamecard.redCount < gamecard.blueCount) {
@@ -191,6 +215,13 @@ ws.onmessage = function (event) {
                         promptButtonsContainer.appendChild(categoryDiv);
                     });
                 } else if (position == "A班學生") {
+                    p2.innerHTML="A班";
+                    p2.classList.add("red");
+                    p3.innerHTML="學生";
+                    p4.innerHTML="，請搶先翻滿"+gamecard.redCount+"張";
+                    p5.innerHTML="紅色";
+                    p5.classList.add("red");
+                    p6.innerHTML="考卷";
                     promptCardButton.classList.add("hidden");
                     if (data.ifgaming == 1) {
                         if (gamecard.state < 3.5 && gamecard.state % 2 == 1) {
@@ -242,6 +273,13 @@ ws.onmessage = function (event) {
                         cardContainer.appendChild(card);
                     });
                 } else if (position == "B班學生") {
+                    p2.innerHTML="B班";
+                    p2.classList.add("blue");
+                    p3.innerHTML="學生";
+                    p4.innerHTML="，請搶先翻滿"+gamecard.blueCount+"張";
+                    p5.innerHTML="藍色";
+                    p5.classList.add("blue");
+                    p6.innerHTML="考卷";
                     promptCardButton.classList.add("hidden");
                     if (data.ifgaming == 1) {
                         if (gamecard.state < 3.5 && gamecard.state % 2 == 1) {
@@ -293,6 +331,20 @@ ws.onmessage = function (event) {
                         cardContainer.appendChild(card);
                     });
                 } else if (position == "學生") {
+                    p7.innerHTML="A";
+                    p7.classList.add("red");
+                    p8.innerHTML="、";
+                    p2.innerHTML="B";
+                    p2.classList.add("blue");
+                    p3.innerHTML="班學生";
+                    p4.innerHTML="，你的目標是同時搶先翻滿"+gamecard.redCount+"張";
+                    p5.innerHTML="紅色";
+                    p5.classList.add("red");
+                    p6.innerHTML="考卷";
+                    p9.innerHTML="和"+gamecard.blueCount+"張";
+                    p10.innerHTML="藍色";
+                    p10.classList.add("blue");
+                    p11.innerHTML="考卷";
                     promptCardButton.classList.add("hidden");
                     if (data.ifgaming == 1) {
                         if (gamecard.state < 3.5 && gamecard.state % 2 == 1) {

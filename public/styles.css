@@ -12,7 +12,9 @@ body {
 #p {
     font-weight: bolder;
 }
-
+span{
+    font-weight: bolder;
+}
 .left-section {
     flex: none;
     display: flex;
@@ -131,11 +133,15 @@ p.hidden {
 .dialog-content {
     background-color: #fff;
     padding: 20px;
-    border: 1px solid #888;
+    border: 1px solid hsl(0, 0%, 53%);
     width: 80%;
     max-width: 500px;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .close {
@@ -191,6 +197,7 @@ p.hidden {
     max-height: 300px;
     overflow-y: auto;
     margin-bottom: 20px;
+    width: 100%;
 }
 
 .left-section {
@@ -307,7 +314,7 @@ button.hidden {
 
 .question-content {
     margin: 50px;
-    display: flex; /* 新增這行 */
+    display: flex;
     flex-direction: column;
 }
 
@@ -360,7 +367,16 @@ button.hidden {
 #quizForm button:hover {
     background-color: #45a049;
 }
-
+#closePromptDialog{
+    width: 100%;
+    text-align: right;
+}
+.red{
+    color:#CF6266;
+}
+.blue{
+    color:#628BCF;
+}
 @media screen and (max-width: 1300px) {
     .dialog-content {
         width: 90%;
@@ -377,8 +393,50 @@ button.hidden {
         flex: none;
         width: 100%;
         max-width: 1300px;
-        overflow: hidden;
-        min-width: 560px;
+    }
+
+    .right-section {
+        height: auto;
+        max-height: 300px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .card,
+    .message-text,
+    .message-text-right {
+        font-size: 10px;
+    }
+}
+@media screen and (max-width: 320px) {
+    .card,
+    .message-text,
+    .message-text-right {
+        font-size: 8px;
+    }
+}
+@media screen and (max-width: 260px) {
+    .card,
+    .message-text,
+    .message-text-right {
+        font-size: 4px;
+    }
+}
+@media screen and (max-height: 560px) {
+    .dialog-content {
+        width: 90%;
+    }
+
+    body {
+        flex-direction: column;
+        height: 100%;
+        overflow: auto;
+    }
+
+    .left-section,
+    .right-section {
+        flex: none;
+        width: 100%;
     }
 
     .right-section {

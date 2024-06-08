@@ -417,13 +417,13 @@ wss.on('connection', (ws, req) => {
                                 gamecard[ws.room].redanswer.shift();
                                 gamecard[ws.room].redremain -= 1;
                                 gamecard[ws.room].redFliped += 1;
-                                if (gamecard[ws.room].redremain <= 0) {
-                                    gamecard[ws.room].redwrongtimes = 0;
-                                    chat[ws.room].push({ chat: "由於A班上一回合僅剩這張考卷未翻，下一回合A班老師可重新提供筆記", id: clientlist[ws.room].filter(item => item.position == "A班老師")[0].id, type: "通知" });
-                                }
                                 if (gamecard[ws.room].redFliped == gamecard[ws.room].redCount) {
                                     ifgaming[ws.room] = 2;
                                     chat[ws.room].push({ chat: "A班翻滿" + gamecard[ws.room].redCount + "張考卷，A班獲勝！", id: clientlist[ws.room].filter(item => item.position == "A班老師")[0].id, type: "通知" });
+                                }
+                                if (ifgaming[ws.room] != 2 && gamecard[ws.room].redremain <= 0) {
+                                    gamecard[ws.room].redwrongtimes = 0;
+                                    chat[ws.room].push({ chat: "由於A班上一回合僅剩這張考卷未翻，下一回合A班老師可重新提供筆記", id: clientlist[ws.room].filter(item => item.position == "A班老師")[0].id, type: "通知" });
                                 }
                             }
                         }
@@ -448,7 +448,7 @@ wss.on('connection', (ws, req) => {
                                 chat[ws.room].push({ chat: "B班翻滿" + gamecard[ws.room].blueCount + "張考卷，B班獲勝！", id: clientlist[ws.room].filter(item => item.position == "B班老師")[0].id, type: "通知" });
                             }
                             if (ifgaming[ws.room] != 2 && gamecard[ws.room].bluewrongtimes > 0 && gamecard[ws.room].blueanswer.includes(data.flip)) {
-                                gamecard[ws.room].blueanswer.shift();
+                                gamecard[ws.room].blueanswer=gamecard[ws.room].blueanswer.filter(item => item != data.flip);
                                 gamecard[ws.room].blueremain -= 1;
                                 if (gamecard[ws.room].blueremain <= 0) {
                                     gamecard[ws.room].bluewrongtimes = 0;
@@ -463,13 +463,13 @@ wss.on('connection', (ws, req) => {
                                 gamecard[ws.room].redanswer.shift();
                                 gamecard[ws.room].redremain -= 1;
                                 gamecard[ws.room].redFliped += 1;
-                                if (gamecard[ws.room].redremain <= 0) {
-                                    gamecard[ws.room].redwrongtimes = 0;
-                                    chat[ws.room].push({ chat: "由於A班上一回合僅剩這張考卷未翻，下一回合A班老師可重新提供筆記", id: clientlist[ws.room].filter(item => item.position == "A班老師")[0].id, type: "通知" });
-                                }
                                 if (gamecard[ws.room].redFliped == gamecard[ws.room].redCount) {
                                     ifgaming[ws.room] = 2;
                                     chat[ws.room].push({ chat: "A班翻滿" + gamecard[ws.room].redCount + "張考卷，A班獲勝！", id: clientlist[ws.room].filter(item => item.position == "A班老師")[0].id, type: "通知" });
+                                }
+                                if (ifgaming[ws.room] != 2 && gamecard[ws.room].redremain <= 0) {
+                                    gamecard[ws.room].redwrongtimes = 0;
+                                    chat[ws.room].push({ chat: "由於A班上一回合僅剩這張考卷未翻，下一回合A班老師可重新提供筆記", id: clientlist[ws.room].filter(item => item.position == "A班老師")[0].id, type: "通知" });
                                 }
                             }
                             if (ifgaming[ws.room] != 2 && gamecard[ws.room].state == 4) {
@@ -490,13 +490,13 @@ wss.on('connection', (ws, req) => {
                                 gamecard[ws.room].redanswer.shift();
                                 gamecard[ws.room].redremain -= 1;
                                 gamecard[ws.room].redFliped += 1;
-                                if (gamecard[ws.room].redremain <= 0) {
-                                    gamecard[ws.room].redwrongtimes = 0;
-                                    chat[ws.room].push({ chat: "由於A班上一回合僅剩這張考卷未翻，下一回合A班老師可重新提供筆記", id: clientlist[ws.room].filter(item => item.position == "A班老師")[0].id, type: "通知" });
-                                }
                                 if (gamecard[ws.room].redFliped == gamecard[ws.room].redCount) {
                                     ifgaming[ws.room] = 2;
                                     chat[ws.room].push({ chat: "A班翻滿" + gamecard[ws.room].redCount + "張考卷，A班獲勝！", id: clientlist[ws.room].filter(item => item.position == "A班老師")[0].id, type: "通知" });
+                                }
+                                if (ifgaming[ws.room] != 2 && gamecard[ws.room].redremain <= 0) {
+                                    gamecard[ws.room].redwrongtimes = 0;
+                                    chat[ws.room].push({ chat: "由於A班上一回合僅剩這張考卷未翻，下一回合A班老師可重新提供筆記", id: clientlist[ws.room].filter(item => item.position == "A班老師")[0].id, type: "通知" });
                                 }
                             }
                             gamecard[ws.room].nowFliped = data.flip;
@@ -546,13 +546,13 @@ wss.on('connection', (ws, req) => {
                                 gamecard[ws.room].blueanswer.shift();
                                 gamecard[ws.room].blueremain -= 1;
                                 gamecard[ws.room].blueFliped += 1;
-                                if (gamecard[ws.room].blueremain <= 0) {
-                                    gamecard[ws.room].bluewrongtimes = 0;
-                                    chat[ws.room].push({ chat: "由於B班上一回合僅剩這張考卷未翻，下一回合B班老師可重新提供筆記", id: clientlist[ws.room].filter(item => item.position == "B班老師")[0].id, type: "通知" });
-                                }
                                 if (gamecard[ws.room].blueFliped == gamecard[ws.room].blueCount) {
                                     ifgaming[ws.room] = 2;
                                     chat[ws.room].push({ chat: "B班翻滿" + gamecard[ws.room].blueCount + "張考卷，B班獲勝！", id: clientlist[ws.room].filter(item => item.position == "B班老師")[0].id, type: "通知" });
+                                }
+                                if (ifgaming[ws.room] != 2 && gamecard[ws.room].blueremain <= 0) {
+                                    gamecard[ws.room].bluewrongtimes = 0;
+                                    chat[ws.room].push({ chat: "由於B班上一回合僅剩這張考卷未翻，下一回合B班老師可重新提供筆記", id: clientlist[ws.room].filter(item => item.position == "B班老師")[0].id, type: "通知" });
                                 }
                             }
                         }
@@ -577,7 +577,7 @@ wss.on('connection', (ws, req) => {
                                 chat[ws.room].push({ chat: "A班翻滿" + gamecard[ws.room].redCount + "張考卷，A班獲勝！", id: clientlist[ws.room].filter(item => item.position == "A班老師")[0].id, type: "通知" });
                             }
                             if (ifgaming[ws.room] != 2 && gamecard[ws.room].redwrongtimes > 0 && gamecard[ws.room].redanswer.includes(data.flip)) {
-                                gamecard[ws.room].redanswer.shift();
+                                gamecard[ws.room].redanswer=gamecard[ws.room].redanswer.filter(item => item != data.flip);
                                 gamecard[ws.room].redremain -= 1;
                                 if (gamecard[ws.room].redremain <= 0) {
                                     gamecard[ws.room].redwrongtimes = 0;
@@ -592,13 +592,13 @@ wss.on('connection', (ws, req) => {
                                 gamecard[ws.room].blueanswer.shift();
                                 gamecard[ws.room].blueremain -= 1;
                                 gamecard[ws.room].blueFliped += 1;
-                                if (gamecard[ws.room].blueremain <= 0) {
-                                    gamecard[ws.room].bluewrongtimes = 0;
-                                    chat[ws.room].push({ chat: "由於B班上一回合僅剩這張考卷未翻，下一回合B班老師可重新提供筆記", id: clientlist[ws.room].filter(item => item.position == "B班老師")[0].id, type: "通知" });
-                                }
                                 if (gamecard[ws.room].blueFliped == gamecard[ws.room].blueCount) {
                                     ifgaming[ws.room] = 2;
                                     chat[ws.room].push({ chat: "B班翻滿" + gamecard[ws.room].blueCount + "張考卷，B班獲勝！", id: clientlist[ws.room].filter(item => item.position == "B班老師")[0].id, type: "通知" });
+                                }
+                                if (ifgaming[ws.room] != 2 && gamecard[ws.room].blueremain <= 0) {
+                                    gamecard[ws.room].bluewrongtimes = 0;
+                                    chat[ws.room].push({ chat: "由於B班上一回合僅剩這張考卷未翻，下一回合B班老師可重新提供筆記", id: clientlist[ws.room].filter(item => item.position == "B班老師")[0].id, type: "通知" });
                                 }
                             }
                             if (ifgaming[ws.room] != 2 && gamecard[ws.room].state == 4) {
@@ -619,13 +619,13 @@ wss.on('connection', (ws, req) => {
                                 gamecard[ws.room].blueanswer.shift();
                                 gamecard[ws.room].blueremain -= 1;
                                 gamecard[ws.room].blueFliped += 1;
-                                if (gamecard[ws.room].blueremain <= 0) {
-                                    gamecard[ws.room].bluewrongtimes = 0;
-                                    chat[ws.room].push({ chat: "由於B班上一回合僅剩這張考卷未翻，下一回合B班老師可重新提供筆記", id: clientlist[ws.room].filter(item => item.position == "B班老師")[0].id, type: "通知" });
-                                }
                                 if (gamecard[ws.room].blueFliped == gamecard[ws.room].blueCount) {
                                     ifgaming[ws.room] = 2;
                                     chat[ws.room].push({ chat: "B班翻滿" + gamecard[ws.room].blueCount + "張考卷，B班獲勝！", id: clientlist[ws.room].filter(item => item.position == "B班老師")[0].id, type: "通知" });
+                                }
+                                if (ifgaming[ws.room] != 2 && gamecard[ws.room].blueremain <= 0) {
+                                    gamecard[ws.room].bluewrongtimes = 0;
+                                    chat[ws.room].push({ chat: "由於B班上一回合僅剩這張考卷未翻，下一回合B班老師可重新提供筆記", id: clientlist[ws.room].filter(item => item.position == "B班老師")[0].id, type: "通知" });
                                 }
                             }
                             gamecard[ws.room].nowFliped = data.flip;
@@ -678,13 +678,13 @@ wss.on('connection', (ws, req) => {
                                 gamecard[ws.room].redanswer.shift();
                                 gamecard[ws.room].redremain -= 1;
                                 gamecard[ws.room].redFliped += 1;
-                                if (gamecard[ws.room].redremain <= 0) {
-                                    gamecard[ws.room].redwrongtimes = 0;
-                                    chat[ws.room].push({ chat: "由於A班上一回合僅剩這張考卷未翻，下一回合A班老師可重新提供筆記", id: clientlist[ws.room].filter(item => item.position == "A班老師")[0].id, type: "通知" });
-                                }
                                 if (gamecard[ws.room].redFliped == gamecard[ws.room].redCount) {
                                     ifgaming[ws.room] = 2;
                                     chat[ws.room].push({ chat: "A班翻滿" + gamecard[ws.room].redCount + "張考卷，A班獲勝！", id: clientlist[ws.room].filter(item => item.position == "A班老師")[0].id, type: "通知" });
+                                }
+                                if (ifgaming[ws.room] != 2 && gamecard[ws.room].redremain <= 0) {
+                                    gamecard[ws.room].redwrongtimes = 0;
+                                    chat[ws.room].push({ chat: "由於A班上一回合僅剩這張考卷未翻，下一回合A班老師可重新提供筆記", id: clientlist[ws.room].filter(item => item.position == "A班老師")[0].id, type: "通知" });
                                 }
                             }
                         }
@@ -709,7 +709,7 @@ wss.on('connection', (ws, req) => {
                                 chat[ws.room].push({ chat: "B班翻滿" + gamecard[ws.room].blueCount + "張考卷，B班獲勝！", id: clientlist[ws.room].filter(item => item.position == "B班老師")[0].id, type: "通知" });
                             }
                             if (ifgaming[ws.room] != 2 && gamecard[ws.room].bluewrongtimes > 0 && gamecard[ws.room].blueanswer.includes(data.flip)) {
-                                gamecard[ws.room].blueanswer.shift();
+                                gamecard[ws.room].blueanswer=gamecard[ws.room].blueanswer.filter(item => item != data.flip);
                                 gamecard[ws.room].blueremain -= 1;
                                 if (gamecard[ws.room].blueremain <= 0) {
                                     gamecard[ws.room].bluewrongtimes = 0;
@@ -724,13 +724,13 @@ wss.on('connection', (ws, req) => {
                                 gamecard[ws.room].redanswer.shift();
                                 gamecard[ws.room].redremain -= 1;
                                 gamecard[ws.room].redFliped += 1;
-                                if (gamecard[ws.room].redremain <= 0) {
-                                    gamecard[ws.room].redwrongtimes = 0;
-                                    chat[ws.room].push({ chat: "由於A班上一回合僅剩這張考卷未翻，下一回合A班老師可重新提供筆記", id: clientlist[ws.room].filter(item => item.position == "A班老師")[0].id, type: "通知" });
-                                }
                                 if (gamecard[ws.room].redFliped == gamecard[ws.room].redCount) {
                                     ifgaming[ws.room] = 2;
                                     chat[ws.room].push({ chat: "A班翻滿" + gamecard[ws.room].redCount + "張考卷，A班獲勝！", id: clientlist[ws.room].filter(item => item.position == "A班老師")[0].id, type: "通知" });
+                                }
+                                if (ifgaming[ws.room] != 2 && gamecard[ws.room].redremain <= 0) {
+                                    gamecard[ws.room].redwrongtimes = 0;
+                                    chat[ws.room].push({ chat: "由於A班上一回合僅剩這張考卷未翻，下一回合A班老師可重新提供筆記", id: clientlist[ws.room].filter(item => item.position == "A班老師")[0].id, type: "通知" });
                                 }
                             }
                             if (ifgaming[ws.room] != 2 && gamecard[ws.room].state == 0) {
@@ -751,13 +751,13 @@ wss.on('connection', (ws, req) => {
                                 gamecard[ws.room].redanswer.shift();
                                 gamecard[ws.room].redremain -= 1;
                                 gamecard[ws.room].redFliped += 1;
-                                if (gamecard[ws.room].redremain <= 0) {
-                                    gamecard[ws.room].redwrongtimes = 0;
-                                    chat[ws.room].push({ chat: "由於A班上一回合僅剩這張考卷未翻，下一回合A班老師可重新提供筆記", id: clientlist[ws.room].filter(item => item.position == "A班老師")[0].id, type: "通知" });
-                                }
                                 if (gamecard[ws.room].redFliped == gamecard[ws.room].redCount) {
                                     ifgaming[ws.room] = 2;
                                     chat[ws.room].push({ chat: "A班翻滿" + gamecard[ws.room].redCount + "張考卷，A班獲勝！", id: clientlist[ws.room].filter(item => item.position == "A班老師")[0].id, type: "通知" });
+                                }
+                                if (ifgaming[ws.room] != 2 && gamecard[ws.room].redremain <= 0) {
+                                    gamecard[ws.room].redwrongtimes = 0;
+                                    chat[ws.room].push({ chat: "由於A班上一回合僅剩這張考卷未翻，下一回合A班老師可重新提供筆記", id: clientlist[ws.room].filter(item => item.position == "A班老師")[0].id, type: "通知" });
                                 }
                             }
                             gamecard[ws.room].nowFliped = data.flip;
@@ -808,13 +808,13 @@ wss.on('connection', (ws, req) => {
                                 gamecard[ws.room].blueanswer.shift();
                                 gamecard[ws.room].blueremain -= 1;
                                 gamecard[ws.room].blueFliped += 1;
-                                if (gamecard[ws.room].blueremain <= 0) {
-                                    gamecard[ws.room].bluewrongtimes = 0;
-                                    chat[ws.room].push({ chat: "由於B班上一回合僅剩這張考卷未翻，下一回合B班老師可重新提供筆記", id: clientlist[ws.room].filter(item => item.position == "B班老師")[0].id, type: "通知" });
-                                }
                                 if (gamecard[ws.room].blueFliped == gamecard[ws.room].blueCount) {
                                     ifgaming[ws.room] = 2;
                                     chat[ws.room].push({ chat: "B班翻滿" + gamecard[ws.room].blueCount + "張考卷，B班獲勝！", id: clientlist[ws.room].filter(item => item.position == "B班老師")[0].id, type: "通知" });
+                                }
+                                if (ifgaming[ws.room] != 2 && gamecard[ws.room].blueremain <= 0) {
+                                    gamecard[ws.room].bluewrongtimes = 0;
+                                    chat[ws.room].push({ chat: "由於B班上一回合僅剩這張考卷未翻，下一回合B班老師可重新提供筆記", id: clientlist[ws.room].filter(item => item.position == "B班老師")[0].id, type: "通知" });
                                 }
                             }
                         }
@@ -834,8 +834,12 @@ wss.on('connection', (ws, req) => {
                             chat[ws.room].push({ chat: "回答錯誤，回合結束！接下來是A班的回合！", id: clientlist[ws.room].filter(item => item.position == "B班老師")[0].id, type: "通知" });
                             gamecard[ws.room].redFliped += 1;
                             gamecard[ws.room].state = 0;
+                            if (gamecard[ws.room].redFliped == gamecard[ws.room].redCount) {
+                                ifgaming[ws.room] = 2;
+                                chat[ws.room].push({ chat: "A班翻滿" + gamecard[ws.room].redCount + "張考卷，A班獲勝！", id: clientlist[ws.room].filter(item => item.position == "A班老師")[0].id, type: "通知" });
+                            }
                             if (ifgaming[ws.room] != 2 && gamecard[ws.room].redwrongtimes > 0 && gamecard[ws.room].redanswer.includes(data.flip)) {
-                                gamecard[ws.room].redanswer.shift();
+                                gamecard[ws.room].redanswer=gamecard[ws.room].redanswer.filter(item => item != data.flip);
                                 gamecard[ws.room].redremain -= 1;
                                 if (gamecard[ws.room].redremain <= 0) {
                                     gamecard[ws.room].redwrongtimes = 0;
@@ -850,13 +854,13 @@ wss.on('connection', (ws, req) => {
                                 gamecard[ws.room].blueanswer.shift();
                                 gamecard[ws.room].blueremain -= 1;
                                 gamecard[ws.room].blueFliped += 1;
-                                if (gamecard[ws.room].blueremain <= 0) {
-                                    gamecard[ws.room].bluewrongtimes = 0;
-                                    chat[ws.room].push({ chat: "由於B班上一回合僅剩這張考卷未翻，下一回合B班老師可重新提供筆記", id: clientlist[ws.room].filter(item => item.position == "B班老師")[0].id, type: "通知" });
-                                }
                                 if (gamecard[ws.room].blueFliped == gamecard[ws.room].blueCount) {
                                     ifgaming[ws.room] = 2;
                                     chat[ws.room].push({ chat: "B班翻滿" + gamecard[ws.room].blueCount + "張考卷，B班獲勝！", id: clientlist[ws.room].filter(item => item.position == "B班老師")[0].id, type: "通知" });
+                                }
+                                if (ifgaming[ws.room] != 2 && gamecard[ws.room].blueremain <= 0) {
+                                    gamecard[ws.room].bluewrongtimes = 0;
+                                    chat[ws.room].push({ chat: "由於B班上一回合僅剩這張考卷未翻，下一回合B班老師可重新提供筆記", id: clientlist[ws.room].filter(item => item.position == "B班老師")[0].id, type: "通知" });
                                 }
                             }
                             if (ifgaming[ws.room] != 2 && gamecard[ws.room].state == 0) {
@@ -877,13 +881,13 @@ wss.on('connection', (ws, req) => {
                                 gamecard[ws.room].blueanswer.shift();
                                 gamecard[ws.room].blueremain -= 1;
                                 gamecard[ws.room].blueFliped += 1;
-                                if (gamecard[ws.room].blueremain <= 0) {
-                                    gamecard[ws.room].bluewrongtimes = 0;
-                                    chat[ws.room].push({ chat: "由於B班上一回合僅剩這張考卷未翻，下一回合B班老師可重新提供筆記", id: clientlist[ws.room].filter(item => item.position == "B班老師")[0].id, type: "通知" });
-                                }
                                 if (gamecard[ws.room].blueFliped == gamecard[ws.room].blueCount) {
                                     ifgaming[ws.room] = 2;
                                     chat[ws.room].push({ chat: "B班翻滿" + gamecard[ws.room].blueCount + "張考卷，B班獲勝！", id: clientlist[ws.room].filter(item => item.position == "B班老師")[0].id, type: "通知" });
+                                }
+                                if (ifgaming[ws.room] != 2 && gamecard[ws.room].blueremain <= 0) {
+                                    gamecard[ws.room].bluewrongtimes = 0;
+                                    chat[ws.room].push({ chat: "由於B班上一回合僅剩這張考卷未翻，下一回合B班老師可重新提供筆記", id: clientlist[ws.room].filter(item => item.position == "B班老師")[0].id, type: "通知" });
                                 }
                             }
                             gamecard[ws.room].nowFliped = data.flip;
