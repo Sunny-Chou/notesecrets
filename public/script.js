@@ -27,7 +27,7 @@ let redCardsTotal = 0;
 let blueCardsTotal = 0;
 let redCardsRevealed = 0;
 let blueCardsRevealed = 0;
-const ws = new WebSocket('ws://https://notesecrets.onrender.com');
+const ws = new WebSocket('ws://notesecrets.onrender.com');
 ws.onopen = function (event) {
     ws.send(JSON.stringify({ type: "更新教室", room: sessionStorage.getItem('room'), id: sessionStorage.getItem('id') }));
 }
