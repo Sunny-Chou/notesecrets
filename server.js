@@ -398,8 +398,7 @@ wss.on('connection', (ws, req) => {
                                 ifgaming[ws.room] = 2;
                                 chat[ws.room].push({ chat: "A班翻滿" + gamecard[ws.room].redCount + "張考卷，A班獲勝！", id: clientlist[ws.room].filter(item => item.position == "A班老師")[0].id, type: "通知" });
                             }
-
-                            if (gamecard[ws.room].redremain <= 0) {
+                            if (ifgaming[ws.room] != 2 && gamecard[ws.room].redremain <= 0) {
                                 gamecard[ws.room].redwrongtimes = 0;
                                 gamecard[ws.room].state += 1;
                                 if (gamecard[ws.room].state < 4) {
@@ -528,7 +527,7 @@ wss.on('connection', (ws, req) => {
                                 ifgaming[ws.room] = 2;
                                 chat[ws.room].push({ chat: "B班翻滿" + gamecard[ws.room].blueCount + "張考卷，B班獲勝！", id: clientlist[ws.room].filter(item => item.position == "B班老師")[0].id, type: "通知" });
                             }
-                            if (gamecard[ws.room].blueremain <= 0) {
+                            if (ifgaming[ws.room] != 2 && gamecard[ws.room].blueremain <= 0) {
                                 gamecard[ws.room].bluewrongtimes = 0;
                                 gamecard[ws.room].state += 1;
                                 if (gamecard[ws.room].state < 4) {
@@ -659,7 +658,7 @@ wss.on('connection', (ws, req) => {
                                 ifgaming[ws.room] = 2;
                                 chat[ws.room].push({ chat: "A班翻滿" + gamecard[ws.room].redCount + "張考卷，A班獲勝！", id: clientlist[ws.room].filter(item => item.position == "A班老師")[0].id, type: "通知" });
                             }
-                            if (gamecard[ws.room].redremain <= 0) {
+                            if (ifgaming[ws.room] != 2 && gamecard[ws.room].redremain <= 0) {
                                 gamecard[ws.room].redwrongtimes = 0;
                                 if (gamecard[ws.room].state != 7) {
                                     gamecard[ws.room].state += 1;
@@ -789,7 +788,7 @@ wss.on('connection', (ws, req) => {
                                 ifgaming[ws.room] = 2;
                                 chat[ws.room].push({ chat: "B班翻滿" + gamecard[ws.room].blueCount + "張考卷，B班獲勝！", id: clientlist[ws.room].filter(item => item.position == "B班老師")[0].id, type: "通知" });
                             }
-                            if (gamecard[ws.room].blueremain <= 0) {
+                            if (ifgaming[ws.room] != 2 && gamecard[ws.room].blueremain <= 0) {
                                 gamecard[ws.room].bluewrongtimes = 0;
                                 if (gamecard[ws.room].state != 7) {
                                     gamecard[ws.room].state += 1;
