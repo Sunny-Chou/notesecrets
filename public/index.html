@@ -75,7 +75,6 @@
             var nickname = document.getElementById("nickname").value;
             room=roomNumber;
             id=nickname;
-            console.log(room);
             ws.send(JSON.stringify({ type: "申請打開教室", room: roomNumber, id: nickname }));
         }
 
