@@ -32,15 +32,27 @@
         <dialog id="quizDialog">
             <form method="dialog" id="quizForm">
                 <h2>選擇題</h2>
-                <p id="q"></p>
-                <input type="radio" id="A" name="choices" value="A">
-                <label for="A" id="At"></label><br>
-                <input type="radio" id="B" name="choices" value="B">
-                <label for="B" id="Bt"></label><br>
-                <input type="radio" id="C" name="choices" value="C">
-                <label for="C" id="Ct"></label><br>
-                <input type="radio" id="D" name="choices" value="D">
-                <label for="D" id="Dt"></label><br><br>
+                <div class="question">
+                    <div class="question-content">
+                        <p id="q"></p>
+                        <div>
+                            <input type="radio" id="A" name="choices" value="A">
+                            <label for="A" id="At"></label>
+                        </div>
+                        <div>
+                            <input type="radio" id="B" name="choices" value="B">
+                            <label for="B" id="Bt"></label>
+                        </div>
+                        <div>
+                            <input type="radio" id="C" name="choices" value="C">
+                            <label for="C" id="Ct"></label>
+                        </div>
+                        <div>
+                            <input type="radio" id="D" name="choices" value="D">
+                            <label for="D" id="Dt"></label>
+                        </div>
+                    </div>
+                </div>
                 <button id="submitBtn">提交答案</button>
             </form>
         </dialog>

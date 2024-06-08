@@ -9,8 +9,12 @@ body {
     height: 100vh;
 }
 
+#p {
+    font-weight: bolder;
+}
+
 .left-section {
-    flex: 3;
+    flex: none;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -20,11 +24,10 @@ body {
 
 
 .right-section {
-    flex: 1;
+    flex: none;
     display: flex;
     flex-direction: column;
     height: 100%;
-    overflow: hidden;
     margin: 20px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
@@ -33,31 +36,66 @@ body {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 10px;
-    padding: 20px;
     width: 80%;
 }
 
 .card {
     color: #888;
-    padding: 20px;
     text-align: center;
-    border: 1px solid #ccc;
     border-radius: 10px;
     cursor: pointer;
-    background-color: #f0f0f0;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s, transform 0.3s;
+    background-position: center;
+    background-size: contain;
+    aspect-ratio: 3 / 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-weight: bolder;
+}
+
+.card ::textCon {
+    transform: scale(0.5);
 }
 
 .card:hover {
     transform: scale(1.05);
 }
-.card.selected{
-    border: 2px solid black;
+
+.card-blue {
+    background-image: url('src/blue.png');
 }
-p.hidden{
+
+.card-blue.selected {
+    color: #183758;
+    background-image: url('src/blue-selected.png');
+}
+
+.card-blue.fliped {
+    background-image: url('src/blue-fliped.png');
+}
+
+.card-red {
+    background-image: url('src/red.png');
+}
+
+.card-red.selected {
+    color: #501111;
+    background-image: url('src/red-selected.png');
+}
+
+.card-red.fliped {
+    background-image: url('src/red-fliped.png');
+}
+
+.card-white {
+    background-image: url('src/unselected.png');
+}
+
+p.hidden {
     display: none;
 }
+
 .action-button {
     margin: 20px;
     padding: 10px 20px;
@@ -92,7 +130,6 @@ p.hidden{
 
 .dialog-content {
     background-color: #fff;
-    margin: 15% auto;
     padding: 20px;
     border: 1px solid #888;
     width: 80%;
@@ -115,31 +152,45 @@ p.hidden{
     cursor: pointer;
 }
 
+.category-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 10px;
+    width: 80%;
+    text-align: center;
+}
+
 .prompt-button {
     color: #888;
     display: inline-block;
     margin: 5px;
     padding: 10px 20px;
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.3s;
+    background-image: url('src/筆記.png');
+    aspect-ratio: 3 / 2;
+    background-position: center;
+    background-size: contain;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-weight: bolder;
 }
 
 .prompt-button:hover {
-    background-color: #e0e0e0;
     transform: scale(1.05);
 }
 
 .prompt-button.selected {
-    color: white;
-    background-color: #4CAF50;
+    background-image: url('src/筆記-selected.png');
+    color: #1e3d1f;
 }
 
 #promptButtonsContainer {
     max-height: 300px;
     overflow-y: auto;
+    margin-bottom: 20px;
 }
 
 .left-section {
@@ -221,7 +272,7 @@ p.hidden{
 }
 
 .chat-footer input {
-    width: 80%;
+    width: 70%;
     padding: 10px;
     border: none;
     border-radius: 5px;
@@ -229,23 +280,44 @@ p.hidden{
 }
 
 #send-button {
-    width: 20%;
+    width: 30%;
     text-align: center;
     color: white;
     border: none;
     border-radius: 50px;
     cursor: pointer;
 }
-button.hidden{
+
+button.hidden {
     display: none;
 }
+
+.question {
+    width: 100%;
+    height: 100%;
+    background-image: url('src/question.png');
+    aspect-ratio: 3 / 2;
+    background-position: center;
+    background-size: contain;
+    font-weight: bolder;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.question-content {
+    margin: 50px;
+    display: flex; /* 新增這行 */
+    flex-direction: column;
+}
+
 #quizDialog {
-    border: 2px solid #4CAF50;
     border-radius: 10px;
     padding: 20px;
-    width: 300px;
-    background-color: #f9f9f9;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    justify-content: center;
+    align-items: center;
+    min-width: 400px;
 }
 
 #quizForm h2 {
@@ -278,18 +350,18 @@ button.hidden{
     border-radius: 5px;
     padding: 10px 20px;
     text-align: center;
-    display: inline-block;
     font-size: 16px;
     margin-top: 20px;
     cursor: pointer;
     font-family: 'Arial', sans-serif;
+    width: 100%;
 }
 
 #quizForm button:hover {
     background-color: #45a049;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 1300px) {
     .dialog-content {
         width: 90%;
     }
@@ -297,17 +369,20 @@ button.hidden{
     body {
         flex-direction: column;
         height: 100%;
+        overflow: auto;
     }
 
     .left-section,
     .right-section {
         flex: none;
         width: 100%;
-
+        max-width: 1300px;
+        overflow: hidden;
+        min-width: 560px;
     }
 
     .right-section {
         height: auto;
-        /* 取消100%高度 */
+        max-height: 300px;
     }
 }

@@ -467,7 +467,12 @@
             ws.send(JSON.stringify({ type: "離開教室"}));
         }
         function game() {
-            ws.send(JSON.stringify({ type: "開始考試"}));
+            if(clientlist.length>=3){
+                ws.send(JSON.stringify({ type: "開始考試"}));
+            }else{
+                alert("最少須3個人才能考試");
+            }
+            
         }
         function send(){
             ws.send(JSON.stringify({ type: "聊天",chat:document.getElementById('messageInput').value}));

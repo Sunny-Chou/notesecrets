@@ -72,8 +72,12 @@ ws.onmessage = function (event) {
                         card.classList.add('card');
                         card.dataset.index = index;
                         card.textContent = visibleText;
+                        card.classList.add('card-' + gamecard.colors[index]);
                         if (gamecard.redanswer.includes(index)) {
                             card.classList.add('selected');
+                        }
+                        if (gamecard.fliped[index]) {
+                            card.classList.add('fliped');
                         }
                         card.addEventListener('click', () => {
                             dialogText.textContent = hiddenText;
@@ -90,17 +94,14 @@ ws.onmessage = function (event) {
                             dialog.style.display = 'flex';
                             currentCard = card;
                         });
-                        card.style.backgroundColor = gamecard.colors[index];
                         cardContainer.appendChild(card);
                     });
                     promptButtonsContainer.innerHTML = "";
-                    console.log(prompt);
                     Object.keys(gamecard.prompt).forEach(category => {
                         const categoryDiv = document.createElement('div');
                         categoryDiv.classList.add('category-container');
                         const categoryTitle = document.createElement('h3');
                         categoryTitle.textContent = category;
-                        categoryDiv.appendChild(categoryTitle);
                         gamecard.prompt[category].forEach(text => {
                             const button = document.createElement('div');
                             button.classList.add('prompt-button');
@@ -117,6 +118,7 @@ ws.onmessage = function (event) {
                             });
                             categoryDiv.appendChild(button);
                         });
+                        promptButtonsContainer.appendChild(categoryTitle);
                         promptButtonsContainer.appendChild(categoryDiv);
                     });
                 } else if (position == "B班老師") {
@@ -139,8 +141,12 @@ ws.onmessage = function (event) {
                         card.classList.add('card');
                         card.dataset.index = index;
                         card.textContent = visibleText;
+                        card.classList.add('card-' + gamecard.colors[index]);
                         if (gamecard.redanswer.includes(index)) {
                             card.classList.add('selected');
+                        }
+                        if (gamecard.fliped[index]) {
+                            card.classList.add('fliped');
                         }
                         card.addEventListener('click', () => {
                             dialogText.textContent = hiddenText;
@@ -157,7 +163,6 @@ ws.onmessage = function (event) {
                             dialog.style.display = 'flex';
                             currentCard = card;
                         });
-                        card.style.backgroundColor = gamecard.colors[index];
                         cardContainer.appendChild(card);
                     });
                     promptButtonsContainer.innerHTML = "";
@@ -166,7 +171,6 @@ ws.onmessage = function (event) {
                         categoryDiv.classList.add('category-container');
                         const categoryTitle = document.createElement('h3');
                         categoryTitle.textContent = category;
-                        categoryDiv.appendChild(categoryTitle);
                         gamecard.prompt[category].forEach(text => {
                             const button = document.createElement('div');
                             button.classList.add('prompt-button');
@@ -183,6 +187,7 @@ ws.onmessage = function (event) {
                             });
                             categoryDiv.appendChild(button);
                         });
+                        promptButtonsContainer.appendChild(categoryTitle);
                         promptButtonsContainer.appendChild(categoryDiv);
                     });
                 } else if (position == "A班學生") {
@@ -218,7 +223,10 @@ ws.onmessage = function (event) {
                         card.classList.add('card');
                         card.dataset.index = index;
                         if (gamecard.fliped[index]) {
-                            card.style.backgroundColor = gamecard.colors[index];
+                            card.classList.add('card-' + gamecard.colors[index]);
+                            card.classList.add('fliped');
+                        } else {
+                            card.classList.add('card-white');
                         }
                         card.textContent = visibleText;
                         card.addEventListener('click', () => {
@@ -266,7 +274,10 @@ ws.onmessage = function (event) {
                         card.classList.add('card');
                         card.dataset.index = index;
                         if (gamecard.fliped[index]) {
-                            card.style.backgroundColor = gamecard.colors[index];
+                            card.classList.add('card-' + gamecard.colors[index]);
+                            card.classList.add('fliped');
+                        } else {
+                            card.classList.add('card-white');
                         }
                         card.textContent = visibleText;
                         card.addEventListener('click', () => {
@@ -318,7 +329,10 @@ ws.onmessage = function (event) {
                         card.classList.add('card');
                         card.dataset.index = index;
                         if (gamecard.fliped[index]) {
-                            card.style.backgroundColor = gamecard.colors[index];
+                            card.classList.add('card-' + gamecard.colors[index]);
+                            card.classList.add('fliped');
+                        } else {
+                            card.classList.add('card-white');
                         }
                         card.textContent = visibleText;
                         card.addEventListener('click', () => {
@@ -407,8 +421,12 @@ ws.onmessage = function (event) {
                         card.classList.add('card');
                         card.dataset.index = index;
                         card.textContent = visibleText;
+                        card.classList.add('card-' + gamecard.colors[index]);
                         if (gamecard.redanswer.includes(index)) {
                             card.classList.add('selected');
+                        }
+                        if (gamecard.fliped[index]) {
+                            card.classList.add('fliped');
                         }
                         card.addEventListener('click', () => {
                             dialogText.textContent = hiddenText;
@@ -425,7 +443,6 @@ ws.onmessage = function (event) {
                             dialog.style.display = 'flex';
                             currentCard = card;
                         });
-                        card.style.backgroundColor = gamecard.colors[index];
                         cardContainer.appendChild(card);
                     });
                 } else if (position == "B班老師") {
@@ -448,8 +465,12 @@ ws.onmessage = function (event) {
                         card.classList.add('card');
                         card.dataset.index = index;
                         card.textContent = visibleText;
+                        card.classList.add('card-' + gamecard.colors[index]);
                         if (gamecard.redanswer.includes(index)) {
                             card.classList.add('selected');
+                        }
+                        if (gamecard.fliped[index]) {
+                            card.classList.add('fliped');
                         }
                         card.addEventListener('click', () => {
                             dialogText.textContent = hiddenText;
@@ -467,7 +488,6 @@ ws.onmessage = function (event) {
                             dialog.style.display = 'flex';
                             currentCard = card;
                         });
-                        card.style.backgroundColor = gamecard.colors[index];
                         cardContainer.appendChild(card);
                     });
                 } else if (position == "A班學生") {
@@ -490,7 +510,10 @@ ws.onmessage = function (event) {
                         card.classList.add('card');
                         card.dataset.index = index;
                         if (gamecard.fliped[index]) {
-                            card.style.backgroundColor = gamecard.colors[index];
+                            card.classList.add('card-' + gamecard.colors[index]);
+                            card.classList.add('fliped');
+                        } else {
+                            card.classList.add('card-white');
                         }
                         card.textContent = visibleText;
                         card.addEventListener('click', () => {
@@ -525,7 +548,10 @@ ws.onmessage = function (event) {
                         card.classList.add('card');
                         card.dataset.index = index;
                         if (gamecard.fliped[index]) {
-                            card.style.backgroundColor = gamecard.colors[index];
+                            card.classList.add('card-' + gamecard.colors[index]);
+                            card.classList.add('fliped');
+                        } else {
+                            card.classList.add('card-white');
                         }
                         card.textContent = visibleText;
                         card.addEventListener('click', () => {
@@ -564,7 +590,10 @@ ws.onmessage = function (event) {
                         card.classList.add('card');
                         card.dataset.index = index;
                         if (gamecard.fliped[index]) {
-                            card.style.backgroundColor = gamecard.colors[index];
+                            card.classList.add('card-' + gamecard.colors[index]);
+                            card.classList.add('fliped');
+                        } else {
+                            card.classList.add('card-white');
                         }
                         card.textContent = visibleText;
                         card.addEventListener('click', () => {
@@ -658,12 +687,10 @@ closeDialog.addEventListener('click', () => {
     currentCard = null;
 });
 
-// Close prompt dialog
 closePromptDialog.addEventListener('click', () => {
     promptDialog.style.display = 'none';
 });
 
-// Submit prompt selection
 submitSelection.addEventListener('click', () => {
     if (selectedPrompts.length > 1) {
         const temp = document.querySelectorAll('.prompt-button.selected[data-category="四大分類"]');
@@ -699,7 +726,7 @@ submitBtn.addEventListener('click', (event) => {
         ws.send(JSON.stringify({ type: "回答", answer: answer }));
         quizForm.reset();
     } else {
-        alert('請選擇一張考卷作為答案。');
+        alert('請選擇一個選項作為答案。');
     }
 });
 revealButton.addEventListener('click', () => {
