@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>筆記解密 讚！</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .left-section {
+            flex: 3;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            max-width: 1200px;
+            margin: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            height: 80%;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .left-section button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            text-align: center;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .right-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            overflow: hidden;
+            margin: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        ul {
+            text-align: center;
+            color: #4d4d75;
+            font-weight: bold;
+        }
+
+        .column {
+            flex: 1;
+            background-color: #ffffff;
+            margin: 0 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            height: 80%;
+        }
+
+        .column h2 {
+            text-align: center;
+            color: #333333;
+            border-bottom: 2px solid #e2e2e2;
+            padding-bottom: 10px;
+        }
+
+        .column ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .column li {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            background-color: #e7e7f3;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .column li.teacher {
+            font-weight: bold;
+            background-color: #cce7ff;
+        }
+
+        .column li:hover {
+            background-color: #d4d4f9;
+        }
+
+        #actionMenu {
+            position: absolute;
+            background-color: #ffffff;
+            border: 1px solid #cccccc;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #actionMenu.hidden {
+            display: none;
+        }
+
+        #actionMenu button {
+            margin: 5px 0;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #actionMenu button:hover {
+            background-color: #45a049;
+        }
+
+        .header {
+            background-color: #00CACA;
+            color: white;
+            padding: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        #chat-body {
+            flex-grow: 1;
+            width: 100%;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: #f9f9f9;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        .message {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .message-text {
+            background-color: #B8B8DC;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .message-right {
+            display: flex;
+            margin-bottom: 20px;
+            justify-content: flex-end;
+        }
+
+        .message-text-right {
+            background-color: #00CACA;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .notify {
+            font-weight: bold;
+            color: #3b3b57;
+        }
+
+        .notify-right {
+            font-weight: bold;
+            color: #315555;
+        }
+
+        .chat-footer {
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: row;
+            background-color: #f1f1f1;
+            padding: 10px;
+            border-radius: 0 0 10px 10px;
+            width: 100%;
+        }
+
+        .chat-footer input {
+            width: 80%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1) inset;
+        }
+
+        #send-button {
+            width: 20%;
+            text-align: center;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+        button.hidden {
+            display: none;
+        }
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+                height: 100%;
+                overflow: auto;
+            }
+
+            .left-section,
+            .right-section {
+                flex: none;
+                width: 100%;
+
+            }
+
+            .right-section {
+                height: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="left-section">
+        <div class="container">
+            <div class="column">
+                <h2>A班</h2>
+                <ul id="classA">
+                </ul>
+            </div>
+            <div class="column">
+                <h2>B班</h2>
+                <ul id="classB">
+                </ul>
+            </div>
+        </div>
+        <button onclick="exitroom()">離開教室</button>
+        <button id="game" onclick="game()">開始考試</button>
+    </div>
+    <div class="right-section">
+        <div class="header">討論室</div>
+        <div id="chat-body">
+
+        </div>
+        <div class="chat-footer">
+            <input type="text" id="messageInput" placeholder="請輸入訊息...">
+            <button id="send-button" style="background-color: #00CACA;" onclick="send()">
+                發送
+            </button>
+        </div>
+    </div>
+    <div id="actionMenu" class="hidden">
+        <button onclick="exchangePosition()">交換身分</button>
+        <button onclick="removeFromClass()">請離教室</button>
+        <button onclick="transferAdmin()">轉移教室管理員</button>
+        <button onclick="hideActions()">取消</button>
+    </div>
+
+    <script>
+        const ws = new WebSocket('ws://https://notesecrets.onrender.com');
+        var clientlist = [];
+        var gamecard = [];
+        var chat = [];
+        ws.onopen = function (event) {
+            const haveroom = sessionStorage.getItem('haveroom');
+            if (haveroom == 'true') {
+                ws.send(JSON.stringify({ type: "更新教室", room: sessionStorage.getItem('room'), id: sessionStorage.getItem('id') }));
+            } else if (haveroom == 'false') {
+                ws.send(JSON.stringify({ type: "打開教室", room: sessionStorage.getItem('room'), id: sessionStorage.getItem('id') }));
+                sessionStorage.setItem('haveroom', true);
+            } else {
+                window.location.href = "index.html";
+            }
+        }
+        ws.onmessage = function (event) {
+            var data = JSON.parse(event.data.toString());
+            console.log('Received server event:', data);
+            if (data.type == "join") {
+                if (data.success) {
+                    const you=data.clientlist.filter(item=>item.id==sessionStorage.getItem("id"))[0];
+                    const menu=document.getElementById('actionMenu');
+                    if(you.owner){
+                        if(data.ifnotify){
+                            ws.send(JSON.stringify({ type: "通知重新考試"}));
+                        }
+                        menu.innerHTML="";
+                        var b=document.createElement("button");
+                        b.setAttribute('onclick', 'exchangePosition()');
+                        b.textContent="交換身分";
+                        menu.appendChild(b);
+                        b=document.createElement("button");
+                        b.setAttribute('onclick', 'removeFromClass()');
+                        b.textContent="請離教室";
+                        menu.appendChild(b);
+                        b=document.createElement("button");
+                        b.setAttribute('onclick', 'transferAdmin()');
+                        b.textContent="轉移教室管理員";
+                        menu.appendChild(b);
+                        b=document.createElement("button");
+                        b.setAttribute('onclick', 'hideActions()');
+                        b.textContent="取消";
+                        menu.appendChild(b);
+                        document.getElementById('game').classList.remove('hidden');
+                    }else{
+                        menu.innerHTML="";
+                        var b=document.createElement("button");
+                        b.setAttribute('onclick', 'exchangePosition()');
+                        b.textContent="交換身分";
+                        menu.appendChild(b);
+                        b=document.createElement("button");
+                        b.setAttribute('onclick', 'hideActions()');
+                        b.textContent="取消";
+                        menu.appendChild(b);
+                        document.getElementById('game').classList.add('hidden');
+                    }
+                    if (data.clientlist) {
+                        clientlist = data.clientlist;
+                        const classA = document.getElementById('classA');
+                        const classB = document.getElementById('classB');
+                        classA.innerHTML = "";
+                        classB.innerHTML = "";
+                        clientlist.forEach(function (client) {
+                            var li = document.createElement('li');
+                            li.textContent = client.id;
+                            li.setAttribute('onclick', 'showActions(this)');
+                            if (client.position == "A班老師") {
+                                li.classList.add('teacher');
+                                classA.appendChild(document.createTextNode('老師'));
+                                classA.appendChild(li);
+                                classA.appendChild(document.createTextNode('學生'));
+                            } else if (client.position == "B班老師") {
+                                li.classList.add('teacher');
+                                classB.appendChild(document.createTextNode('老師'));
+                                classB.appendChild(li);
+                                classB.appendChild(document.createTextNode('學生'));
+                            } else if (client.position == "A班學生") {
+                                classA.appendChild(li);
+                            } else if (client.position == "B班學生") {
+                                classB.appendChild(li);
+                            } else if (client.position == "學生") {
+                                classA.appendChild(li);
+                            }
+                        })
+                    }
+                    if (data.chat) {
+                        const chatbody = document.getElementById('chat-body');
+                        for (var i = chat.length; i < data.chat.length; i++) {
+                            if (data.chat[i].id != sessionStorage.getItem("id")) {
+                                var newchat = document.createElement('div');
+                                newchat.classList.add('message');
+                                newchat.textContent = data.chat[i].id + "：";
+                                var newchattext = document.createElement('div');
+                                newchattext.classList.add('message-text');
+                                if (data.chat[i].type == '通知') {
+                                    newchattext.classList.add('notify');
+                                }
+                                newchattext.textContent = data.chat[i].chat
+                                newchat.appendChild(newchattext);
+                                chatbody.appendChild(newchat);
+                            } else {
+                                var newchat = document.createElement('div');
+                                newchat.classList.add('message-right');
+                                var newchattext = document.createElement('div');
+                                newchattext.classList.add('message-text-right');
+                                if (data.chat[i].type == '通知') {
+                                    newchattext.classList.add('notify-right');
+                                }
+                                newchattext.textContent = data.chat[i].chat
+                                newchat.appendChild(newchattext);
+                                chatbody.appendChild(newchat);
+                            }
+                        }
+                        chat = data.chat;
+                    }
+                } else {
+                    alert(data.message);
+                }
+            } else if (data.type == "ask") {
+                if (data.success) {
+                    var userResponse = confirm(data.id + "想要與你交換身分，你是否同意？");
+                    if (userResponse) {
+                        ws.send(JSON.stringify({ type: "交換", id: data.id, change:true }));
+                    } else {
+                        ws.send(JSON.stringify({ type: "交換", id: data.id, change:false }));
+                    }
+                }
+            }else if(data.type=="game"){
+                window.location.href="testing.html";
+            } else if(data.type.includes(".html")){
+                if(!data.success){
+                    if(data.type=="index.html"){
+                        sessionStorage.removeItem("id");
+                        sessionStorage.removeItem("room");
+                        sessionStorage.removeItem("haveroom");
+                    }
+                    alert(data.message);
+                    window.location.href = data.type;
+                }
+            }else{
+                alert(data.type);
+            }
+        }
+        function showActions(element) {
+            const actionMenu = document.getElementById('actionMenu');
+            actionMenu.classList.add('hidden');
+            actionMenu.style.top = 'auto';
+            actionMenu.style.left = 'auto';
+            const rect = element.getBoundingClientRect();
+            actionMenu.style.top = `${rect.top + window.scrollY - actionMenu.offsetHeight}px`;
+            actionMenu.style.left = `${rect.left + window.scrollX}px`;
+            actionMenu.classList.remove('hidden');
+            actionMenu.dataset.target = element.innerText;
+        }
+
+        function hideActions() {
+            const actionMenu = document.getElementById('actionMenu');
+            actionMenu.classList.add('hidden');
+        }
+
+        function exchangePosition() {
+            const target = document.getElementById('actionMenu').dataset.target;
+            ws.send(JSON.stringify({ type: "交換請求", id: target }));
+            hideActions();
+        }
+
+        function removeFromClass() {
+            const target = document.getElementById('actionMenu').dataset.target;
+            ws.send(JSON.stringify({ type: "請離教室", id: target }));
+            hideActions();
+        }
+
+        function transferAdmin() {
+            const target = document.getElementById('actionMenu').dataset.target;
+            ws.send(JSON.stringify({ type: "轉移教室管理員", id: target }));
+            hideActions();
+        }
+
+        function exitroom() {
+            ws.send(JSON.stringify({ type: "離開教室"}));
+        }
+        function game() {
+            ws.send(JSON.stringify({ type: "開始考試"}));
+        }
+        function send(){
+            ws.send(JSON.stringify({ type: "聊天",chat:document.getElementById('messageInput').value}));
+        }
+    </script>
+</body>
+
+</html>

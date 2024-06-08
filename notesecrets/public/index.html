@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>筆記解密 讚！</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 300px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+        }
+
+        .button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            text-align: center;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <input type="text" id="roomNumber" placeholder="輸入教室門號">
+        <input type="text" id="nickname" placeholder="輸入暱稱">
+        <button class="button" onclick="createRoom()">打開教室</button>
+        <button class="button" onclick="joinRoom()">進入教室</button>
+    </div>
+
+    <script>
+        var room,id;
+        const ws = new WebSocket('ws://https://notesecrets.onrender.com');
+        function createRoom() {
+            var roomNumber = document.getElementById("roomNumber").value;
+            var nickname = document.getElementById("nickname").value;
+            room=roomNumber;
+            id=nickname;
+            console.log(room);
+            ws.send(JSON.stringify({ type: "申請打開教室", room: roomNumber, id: nickname }));
+        }
+
+        function joinRoom() {
+            var roomNumber = document.getElementById("roomNumber").value;
+            var nickname = document.getElementById("nickname").value;
+            room=roomNumber;
+            id=nickname;
+            ws.send(JSON.stringify({ type: "進入教室", room: roomNumber, id: nickname }));
+        }
+        ws.onmessage = function (event) {
+            var data = JSON.parse(event.data.toString());
+            console.log('Received server event:', data);
+            if (data.success) {
+                if (data.type == "join") {
+                    sessionStorage.setItem('id', id);
+                    sessionStorage.setItem('room', room);
+                    sessionStorage.setItem('haveroom', true);
+                    window.location.href = "waiting.html";
+                } else if (data.type == "create") {
+                    sessionStorage.setItem('id', id);
+                    sessionStorage.setItem('room', room);
+                    sessionStorage.setItem('haveroom', false);
+                    window.location.href = "waiting.html";
+                }
+            } else if(data.type.includes(".html")){
+                alert(data.message);
+                window.location.href = data.type;
+            }
+        }
+    </script>
+
+</body>
+
+</html>

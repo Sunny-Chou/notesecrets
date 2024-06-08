@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>筆記解密 讚！</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="left-section">
+        <p id="p">輪到你的回合！</p>
+        <div class="card-container" id="cardContainer"></div>
+        <button id="promptCardButton" class="action-button">選擇筆記</button>
+        <button id="replay" class="action-button" onclick="replays()">重新考試</button>
+        <div id="dialog" class="dialog">
+            <div class="dialog-content">
+                <span id="closeDialog" class="close">&times;</span>
+                <div id="dialogText"></div>
+                <button id="revealButton" class="action-button">翻開</button>
+            </div>
+        </div>
+
+        <div id="promptDialog" class="dialog">
+            <div class="dialog-content">
+                <span id="closePromptDialog" class="close">&times;</span>
+                <div id="promptButtonsContainer"></div>
+                <button id="submitSelection" class="action-button">提供筆記</button>
+            </div>
+        </div>
+        <dialog id="quizDialog">
+            <form method="dialog" id="quizForm">
+                <h2>選擇題</h2>
+                <p id="q"></p>
+                <input type="radio" id="A" name="choices" value="A">
+                <label for="A" id="At"></label><br>
+                <input type="radio" id="B" name="choices" value="B">
+                <label for="B" id="Bt"></label><br>
+                <input type="radio" id="C" name="choices" value="C">
+                <label for="C" id="Ct"></label><br>
+                <input type="radio" id="D" name="choices" value="D">
+                <label for="D" id="Dt"></label><br><br>
+                <button id="submitBtn">提交答案</button>
+            </form>
+        </dialog>
+    </div>
+    <div class="right-section">
+        <div class="header">討論室</div>
+        <div id="chat-body">
+        </div>
+        <div class="chat-footer">
+            <input type="text" id="messageInput" placeholder="請輸入訊息...">
+            <button id="send-button" style="background-color: #00CACA;" onclick="send()">
+                發送
+            </button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
