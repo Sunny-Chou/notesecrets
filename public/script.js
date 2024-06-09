@@ -745,7 +745,7 @@ closePromptDialog.addEventListener('click', () => {
 
 submitSelection.addEventListener('click', () => {
     if (selectedPrompts.length > 1) {
-        const temp = document.querySelectorAll('.prompt-button.selected[data-category="四大分類"]');
+        const temp = document.querySelectorAll('.prompt-button.selected[data-category="四大分類（必選一）"]');
         if (temp.length == 1) {
             if (selectedCards.length > 0) {
                 const confirmSelection = confirm(`您選擇了筆記: ${selectedPrompts.join(', ')}\n以及答案：${selectedCardsName.join(', ')}\n是否確定?`);
