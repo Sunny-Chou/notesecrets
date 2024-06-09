@@ -39,7 +39,11 @@ let redCardsRevealed = 0;
 let blueCardsRevealed = 0;
 const ws = new WebSocket('wss://notesecrets.onrender.com');
 ws.onopen = function (event) {
-    ws.send(JSON.stringify({ type: "更新教室", room: sessionStorage.getItem('room'), id: sessionStorage.getItem('id') }));
+    if (sessionStorage.getItem('room') && sessionStorage.getItem('id')) {
+        ws.send(JSON.stringify({ type: "更新教室", room: sessionStorage.getItem('room'), id: sessionStorage.getItem('id') }));
+    }else{
+        window.location.href="index.html";
+    }
 }
 ws.onmessage = function (event) {
     var data = JSON.parse(event.data.toString());
@@ -63,13 +67,13 @@ ws.onmessage = function (event) {
                 }
                 cardContainer.innerHTML = "";
                 if (position == "A班老師") {
-                    p2.innerHTML="A班";
+                    p2.innerHTML = "A班";
                     p2.classList.add("red");
-                    p3.innerHTML="老師";
-                    p4.innerHTML="，請選擇";
-                    p5.innerHTML="紅色";
+                    p3.innerHTML = "老師";
+                    p4.innerHTML = "，請選擇";
+                    p5.innerHTML = "紅色";
                     p5.classList.add("red");
-                    p6.innerHTML="考卷作為答案";
+                    p6.innerHTML = "考卷作為答案";
                     if (data.ifgaming == 1) {
                         if (gamecard.state < 3.5 && gamecard.state % 2 == 0) {
                             if (gamecard.redCount > gamecard.blueCount) {
@@ -139,13 +143,13 @@ ws.onmessage = function (event) {
                         promptButtonsContainer.appendChild(categoryDiv);
                     });
                 } else if (position == "B班老師") {
-                    p2.innerHTML="B班";
+                    p2.innerHTML = "B班";
                     p2.classList.add("blue");
-                    p3.innerHTML="老師";
-                    p4.innerHTML="，請選擇";
-                    p5.innerHTML="藍色";
+                    p3.innerHTML = "老師";
+                    p4.innerHTML = "，請選擇";
+                    p5.innerHTML = "藍色";
                     p5.classList.add("blue");
-                    p6.innerHTML="考卷作為答案";
+                    p6.innerHTML = "考卷作為答案";
                     if (data.ifgaming == 1) {
                         if (gamecard.state < 3.5 && gamecard.state % 2 == 0) {
                             if (gamecard.redCount < gamecard.blueCount) {
@@ -215,13 +219,13 @@ ws.onmessage = function (event) {
                         promptButtonsContainer.appendChild(categoryDiv);
                     });
                 } else if (position == "A班學生") {
-                    p2.innerHTML="A班";
+                    p2.innerHTML = "A班";
                     p2.classList.add("red");
-                    p3.innerHTML="學生";
-                    p4.innerHTML="，請搶先翻滿"+gamecard.redCount+"張";
-                    p5.innerHTML="紅色";
+                    p3.innerHTML = "學生";
+                    p4.innerHTML = "，請搶先翻滿" + gamecard.redCount + "張";
+                    p5.innerHTML = "紅色";
                     p5.classList.add("red");
-                    p6.innerHTML="考卷";
+                    p6.innerHTML = "考卷";
                     promptCardButton.classList.add("hidden");
                     if (data.ifgaming == 1) {
                         if (gamecard.state < 3.5 && gamecard.state % 2 == 1) {
@@ -273,13 +277,13 @@ ws.onmessage = function (event) {
                         cardContainer.appendChild(card);
                     });
                 } else if (position == "B班學生") {
-                    p2.innerHTML="B班";
+                    p2.innerHTML = "B班";
                     p2.classList.add("blue");
-                    p3.innerHTML="學生";
-                    p4.innerHTML="，請搶先翻滿"+gamecard.blueCount+"張";
-                    p5.innerHTML="藍色";
+                    p3.innerHTML = "學生";
+                    p4.innerHTML = "，請搶先翻滿" + gamecard.blueCount + "張";
+                    p5.innerHTML = "藍色";
                     p5.classList.add("blue");
-                    p6.innerHTML="考卷";
+                    p6.innerHTML = "考卷";
                     promptCardButton.classList.add("hidden");
                     if (data.ifgaming == 1) {
                         if (gamecard.state < 3.5 && gamecard.state % 2 == 1) {
@@ -331,20 +335,20 @@ ws.onmessage = function (event) {
                         cardContainer.appendChild(card);
                     });
                 } else if (position == "學生") {
-                    p7.innerHTML="A";
+                    p7.innerHTML = "A";
                     p7.classList.add("red");
-                    p8.innerHTML="、";
-                    p2.innerHTML="B";
+                    p8.innerHTML = "、";
+                    p2.innerHTML = "B";
                     p2.classList.add("blue");
-                    p3.innerHTML="班學生";
-                    p4.innerHTML="，你的目標是同時搶先翻滿"+gamecard.redCount+"張";
-                    p5.innerHTML="紅色";
+                    p3.innerHTML = "班學生";
+                    p4.innerHTML = "，你的目標是同時搶先翻滿" + gamecard.redCount + "張";
+                    p5.innerHTML = "紅色";
                     p5.classList.add("red");
-                    p6.innerHTML="考卷";
-                    p9.innerHTML="和"+gamecard.blueCount+"張";
-                    p10.innerHTML="藍色";
+                    p6.innerHTML = "考卷";
+                    p9.innerHTML = "和" + gamecard.blueCount + "張";
+                    p10.innerHTML = "藍色";
                     p10.classList.add("blue");
-                    p11.innerHTML="考卷";
+                    p11.innerHTML = "考卷";
                     promptCardButton.classList.add("hidden");
                     if (data.ifgaming == 1) {
                         if (gamecard.state < 3.5 && gamecard.state % 2 == 1) {
@@ -719,8 +723,10 @@ ws.onmessage = function (event) {
     } else if (data.type.includes(".html")) {
         alert(data.message);
         window.location.href = data.type;
-    } else {
+    } else if(!data.success){
         alert(data.message);
+    }else if(data.type=="join"){
+        window.location.href="waiting.html";
     }
 }
 
@@ -803,5 +809,17 @@ function replays() {
     ws.send(JSON.stringify({ type: "重新考試" }));
 }
 function send() {
-    ws.send(JSON.stringify({ type: "聊天", chat: document.getElementById('messageInput').value }));
+    if (document.getElementById('messageInput').value !== "") {
+        ws.send(JSON.stringify({ type: "聊天", chat: document.getElementById('messageInput').value }));
+        document.getElementById('messageInput').value = '';
+    }
 }
+document.addEventListener('DOMContentLoaded', (event) => {
+    const input = document.getElementById('messageInput');
+    input.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            send();
+        }
+    });
+});

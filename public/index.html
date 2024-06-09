@@ -70,19 +70,27 @@
     <script>
         var room,id;
         const ws = new WebSocket('wss://notesecrets.onrender.com');
+        ws.onopen = function (event) {
+            if (sessionStorage.getItem('room') && sessionStorage.getItem('id')) {
+                ws.send(JSON.stringify({ type: "更新教室", room: sessionStorage.getItem('room'), id: sessionStorage.getItem('id') }));
+            }
+        }
         function createRoom() {
             var roomNumber = document.getElementById("roomNumber").value;
             var nickname = document.getElementById("nickname").value;
-            room=roomNumber;
-            id=nickname;
+            room = roomNumber;
+            id = nickname;
             ws.send(JSON.stringify({ type: "申請打開教室", room: roomNumber, id: nickname }));
         }
 
         function joinRoom() {
             var roomNumber = document.getElementById("roomNumber").value;
             var nickname = document.getElementById("nickname").value;
-            room=roomNumber;
-            id=nickname;
+            room = roomNumber;
+            id = nickname;
+            sessionStorage.setItem('id', id);
+            sessionStorage.setItem('room', room);
+            sessionStorage.setItem('haveroom', true);
             ws.send(JSON.stringify({ type: "進入教室", room: roomNumber, id: nickname }));
         }
         ws.onmessage = function (event) {
@@ -90,17 +98,19 @@
             console.log('Received server event:', data);
             if (data.success) {
                 if (data.type == "join") {
-                    sessionStorage.setItem('id', id);
-                    sessionStorage.setItem('room', room);
-                    sessionStorage.setItem('haveroom', true);
                     window.location.href = "waiting.html";
                 } else if (data.type == "create") {
                     sessionStorage.setItem('id', id);
                     sessionStorage.setItem('room', room);
                     sessionStorage.setItem('haveroom', false);
                     window.location.href = "waiting.html";
+                } else if (data.type == "firstchat") {
+                    window.location.href = "testing.html";
                 }
-            } else if(data.type.includes(".html")){
+            } else if (data.type.includes(".html")) {
+                sessionStorage.removeItem('id');
+                sessionStorage.removeItem('room');
+                sessionStorage.removeItem('haveroom');
                 alert(data.message);
                 window.location.href = data.type;
             }

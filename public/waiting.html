@@ -224,9 +224,11 @@
         button:hover {
             background-color: #0056b3;
         }
+
         button.hidden {
             display: none;
         }
+
         @media (max-width: 768px) {
             body {
                 flex-direction: column;
@@ -305,39 +307,39 @@
             console.log('Received server event:', data);
             if (data.type == "join") {
                 if (data.success) {
-                    const you=data.clientlist.filter(item=>item.id==sessionStorage.getItem("id"))[0];
-                    const menu=document.getElementById('actionMenu');
-                    if(you.owner){
-                        if(data.ifnotify){
-                            ws.send(JSON.stringify({ type: "通知重新考試"}));
+                    const you = data.clientlist.filter(item => item.id == sessionStorage.getItem("id"))[0];
+                    const menu = document.getElementById('actionMenu');
+                    if (you.owner) {
+                        if (data.ifnotify) {
+                            ws.send(JSON.stringify({ type: "通知重新考試" }));
                         }
-                        menu.innerHTML="";
-                        var b=document.createElement("button");
+                        menu.innerHTML = "";
+                        var b = document.createElement("button");
                         b.setAttribute('onclick', 'exchangePosition()');
-                        b.textContent="交換身分";
+                        b.textContent = "交換身分";
                         menu.appendChild(b);
-                        b=document.createElement("button");
+                        b = document.createElement("button");
                         b.setAttribute('onclick', 'removeFromClass()');
-                        b.textContent="請離教室";
+                        b.textContent = "請離教室";
                         menu.appendChild(b);
-                        b=document.createElement("button");
+                        b = document.createElement("button");
                         b.setAttribute('onclick', 'transferAdmin()');
-                        b.textContent="轉移教室管理員";
+                        b.textContent = "轉移教室管理員";
                         menu.appendChild(b);
-                        b=document.createElement("button");
+                        b = document.createElement("button");
                         b.setAttribute('onclick', 'hideActions()');
-                        b.textContent="取消";
+                        b.textContent = "取消";
                         menu.appendChild(b);
                         document.getElementById('game').classList.remove('hidden');
-                    }else{
-                        menu.innerHTML="";
-                        var b=document.createElement("button");
+                    } else {
+                        menu.innerHTML = "";
+                        var b = document.createElement("button");
                         b.setAttribute('onclick', 'exchangePosition()');
-                        b.textContent="交換身分";
+                        b.textContent = "交換身分";
                         menu.appendChild(b);
-                        b=document.createElement("button");
+                        b = document.createElement("button");
                         b.setAttribute('onclick', 'hideActions()');
-                        b.textContent="取消";
+                        b.textContent = "取消";
                         menu.appendChild(b);
                         document.getElementById('game').classList.add('hidden');
                     }
@@ -407,16 +409,16 @@
                 if (data.success) {
                     var userResponse = confirm(data.id + "想要與你交換身分，你是否同意？");
                     if (userResponse) {
-                        ws.send(JSON.stringify({ type: "交換", id: data.id, change:true }));
+                        ws.send(JSON.stringify({ type: "交換", id: data.id, change: true }));
                     } else {
-                        ws.send(JSON.stringify({ type: "交換", id: data.id, change:false }));
+                        ws.send(JSON.stringify({ type: "交換", id: data.id, change: false }));
                     }
                 }
-            }else if(data.type=="game"){
-                window.location.href="testing.html";
-            } else if(data.type.includes(".html")){
-                if(!data.success){
-                    if(data.type=="index.html"){
+            } else if (data.type == "game") {
+                window.location.href = "testing.html";
+            } else if (data.type.includes(".html")) {
+                if (!data.success) {
+                    if (data.type == "index.html") {
                         sessionStorage.removeItem("id");
                         sessionStorage.removeItem("room");
                         sessionStorage.removeItem("haveroom");
@@ -424,8 +426,12 @@
                     alert(data.message);
                     window.location.href = data.type;
                 }
-            }else{
-                alert(data.type);
+            } else if (data.type == "firstchat") {
+                window.location.href = "testing.html";
+            } else {
+                if (!data.success) {
+                    alert(data.message);
+                }
             }
         }
         function showActions(element) {
@@ -464,19 +470,31 @@
         }
 
         function exitroom() {
-            ws.send(JSON.stringify({ type: "離開教室"}));
+            ws.send(JSON.stringify({ type: "離開教室" }));
         }
         function game() {
-            if(clientlist.length>=3){
-                ws.send(JSON.stringify({ type: "開始考試"}));
-            }else{
+            if (clientlist.length >= 3) {
+                ws.send(JSON.stringify({ type: "開始考試" }));
+            } else {
                 alert("最少須3個人才能考試");
             }
-            
+
         }
-        function send(){
-            ws.send(JSON.stringify({ type: "聊天",chat:document.getElementById('messageInput').value}));
+        function send() {
+            if (document.getElementById('messageInput').value !== "") {
+                ws.send(JSON.stringify({ type: "聊天", chat: document.getElementById('messageInput').value }));
+                document.getElementById('messageInput').value = '';
+            }
         }
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const input = document.getElementById('messageInput');
+            input.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    send();
+                }
+            });
+        });
     </script>
 </body>
 
