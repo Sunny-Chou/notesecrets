@@ -28,9 +28,6 @@ const p9 = document.getElementById('p9');
 const p10 = document.getElementById('p10');
 const p11 = document.getElementById('p11');
 const replay = document.getElementById("replay");
-let selectedPrompts = [];
-let selectedCards = [];
-let selectedCardsName = [];
 let redCardsTotal = 0;
 let blueCardsTotal = 0;
 let redCardsRevealed = 0;
@@ -106,12 +103,8 @@ ws.onmessage = function (event) {
                                 if (gamecard.colors[this.dataset.index] == "red" && yourturn) {
                                     if (this.classList.contains("selected")) {
                                         this.classList.remove("selected");
-                                        selectedCards = selectedCards.filter(item => item != this.dataset.index);
-                                        selectedCardsName = selectedCardsName.filter(item => item != this.textContent);
                                     } else {
                                         this.classList.add("selected");
-                                        selectedCards.push(this.dataset.index);
-                                        selectedCardsName.push(this.textContent);
                                     }
                                 }
                             });
@@ -130,11 +123,10 @@ ws.onmessage = function (event) {
                             button.textContent = text;
                             button.dataset.category = category;
                             button.addEventListener('click', () => {
-                                if (selectedPrompts.includes(text)) {
-                                    selectedPrompts = selectedPrompts.filter(item => item !== text);
+                                var selecteds = document.querySelectorAll('.prompt-button.selected');
+                                if (button.classList.contains("selected")) {
                                     button.classList.remove('selected');
-                                } else if (selectedPrompts.length < 3) {
-                                    selectedPrompts.push(text);
+                                } else if (selecteds.length < 3) {
                                     button.classList.add('selected');
                                 }
                             });
@@ -185,12 +177,8 @@ ws.onmessage = function (event) {
                                 if (gamecard.colors[this.dataset.index] == "blue" && yourturn) {
                                     if (this.classList.contains("selected")) {
                                         this.classList.remove("selected");
-                                        selectedCards = selectedCards.filter(item => item != this.dataset.index);
-                                        selectedCardsName = selectedCardsName.filter(item => item != this.textContent);
                                     } else {
                                         this.classList.add("selected");
-                                        selectedCards.push(this.dataset.index);
-                                        selectedCardsName.push(this.textContent);
                                     }
                                 }
                             });
@@ -209,11 +197,10 @@ ws.onmessage = function (event) {
                             button.textContent = text;
                             button.dataset.category = category;
                             button.addEventListener('click', () => {
-                                if (selectedPrompts.includes(text)) {
-                                    selectedPrompts = selectedPrompts.filter(item => item !== text);
+                                var selecteds = document.querySelectorAll('.prompt-button.selected');
+                                if (button.classList.contains("selected")) {
                                     button.classList.remove('selected');
-                                } else if (selectedPrompts.length < 3) {
-                                    selectedPrompts.push(text);
+                                } else if (selecteds.length < 3) {
                                     button.classList.add('selected');
                                 }
                             });
@@ -499,12 +486,8 @@ ws.onmessage = function (event) {
                                 if (gamecard.colors[this.dataset.index] == "red" && yourturn) {
                                     if (this.classList.contains("selected")) {
                                         this.classList.remove("selected");
-                                        selectedCards = selectedCards.filter(item => item != this.dataset.index);
-                                        selectedCardsName = selectedCardsName.filter(item => item != this.textContent);
                                     } else {
                                         this.classList.add("selected");
-                                        selectedCards.push(this.dataset.index);
-                                        selectedCardsName.push(this.textContent);
                                     }
                                 }
                             });
@@ -546,12 +529,8 @@ ws.onmessage = function (event) {
                                 if (gamecard.colors[this.dataset.index] == "blue" && yourturn) {
                                     if (this.classList.contains("selected")) {
                                         this.classList.remove("selected");
-                                        selectedCards = selectedCards.filter(item => item != this.dataset.index);
-                                        selectedCardsName = selectedCardsName.filter(item => item != this.textContent);
                                     } else {
                                         this.classList.add("selected");
-                                        selectedCards.push(this.dataset.index);
-                                        selectedCardsName.push(this.textContent);
                                     }
                                 }
                             });
@@ -744,11 +723,6 @@ ws.onmessage = function (event) {
         window.location.href = "waiting.html";
     }
 }
-
-
-
-
-
 // Open prompt dialog
 promptCardButton.addEventListener('click', () => {
     promptDialog.style.display = 'flex';
@@ -764,17 +738,17 @@ closePromptDialog.addEventListener('click', () => {
 });
 
 submitSelection.addEventListener('click', () => {
-    if (selectedPrompts.length > 1) {
+    const selecteds = Array.from(document.querySelectorAll('.prompt-button.selected')).map(item => item = item.textContent);
+    const selectedsCard = Array.from(document.querySelectorAll('.card.selected')).map(item => item = item.textContent);
+    const selectedsCardindex = Array.from(document.querySelectorAll('.card.selected')).map(item => item = item.dataset.index);
+    if (selecteds.length > 1) {
         const temp = document.querySelectorAll('.prompt-button.selected[data-category="四大分類（必選一）"]');
         if (temp.length == 1) {
-            if (selectedCards.length > 0) {
-                const confirmSelection = confirm(`您選擇了筆記: ${selectedPrompts.join(', ')}\n以及答案：${selectedCardsName.join(', ')}\n是否確定?`);
+            if (selectedsCard.length > 0) {
+                const confirmSelection = confirm(`您選擇了筆記: ${selecteds.join(', ')}\n以及答案：${selectedsCard.join(', ')}\n是否確定?`);
                 if (confirmSelection) {
                     promptDialog.style.display = 'none';
-                    ws.send(JSON.stringify({ type: "筆記", prompt: selectedPrompts, answer: selectedCards }));
-                    selectedPrompts = [];
-                    selectedCards = [];
-                    selectedCardsName = [];
+                    ws.send(JSON.stringify({ type: "筆記", prompt: selecteds, answer: selectedsCardindex }));
                     document.querySelectorAll('.prompt-button').forEach(button => button.classList.remove('selected'));
                 }
             } else {
