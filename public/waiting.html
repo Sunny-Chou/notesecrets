@@ -166,32 +166,42 @@
             margin-bottom: 20px;
         }
 
-        .message-text {
-            background-color: #B8B8DC;
-            padding: 10px;
-            border-radius: 10px;
-        }
-
         .message-right {
             display: flex;
             margin-bottom: 20px;
             justify-content: flex-end;
         }
 
-        .message-text-right {
+        .message-text-blue {
+            background-color: #628BCF;
+            color: #24344f;
+            padding: 10px;
+            border-radius: 10px;
+            font-weight: bolder;
+        }
+
+        .message-text-red {
+            background-color: #CF6266;
+            color: #451b1c;
+            padding: 10px;
+            border-radius: 10px;
+            font-weight: bolder;
+        }
+
+        .message-text-red-blue {
+            background: linear-gradient(to right, #CF6266 50%, #628BCF 50%);
+            color: #451b40;
+            padding: 10px;
+            border-radius: 10px;
+            font-weight: bolder;
+        }
+
+        .notify-text {
+            color: #123f3f;
             background-color: #00CACA;
             padding: 10px;
             border-radius: 10px;
-        }
-
-        .notify {
-            font-weight: bold;
-            color: #3b3b57;
-        }
-
-        .notify-right {
-            font-weight: bold;
-            color: #315555;
+            font-weight: bolder;
         }
 
         .chat-footer {
@@ -375,30 +385,27 @@
                     if (data.chat) {
                         const chatbody = document.getElementById('chat-body');
                         for (var i = chat.length; i < data.chat.length; i++) {
+                            var newchat = document.createElement('div');
                             if (data.chat[i].id != sessionStorage.getItem("id")) {
-                                var newchat = document.createElement('div');
                                 newchat.classList.add('message');
                                 newchat.textContent = data.chat[i].id + "：";
-                                var newchattext = document.createElement('div');
-                                newchattext.classList.add('message-text');
-                                if (data.chat[i].type == '通知') {
-                                    newchattext.classList.add('notify');
-                                }
-                                newchattext.textContent = data.chat[i].chat
-                                newchat.appendChild(newchattext);
-                                chatbody.appendChild(newchat);
                             } else {
                                 var newchat = document.createElement('div');
                                 newchat.classList.add('message-right');
-                                var newchattext = document.createElement('div');
-                                newchattext.classList.add('message-text-right');
-                                if (data.chat[i].type == '通知') {
-                                    newchattext.classList.add('notify-right');
-                                }
-                                newchattext.textContent = data.chat[i].chat
-                                newchat.appendChild(newchattext);
-                                chatbody.appendChild(newchat);
                             }
+                            var newchattext = document.createElement('div');
+                            if (data.chat[i].type == '通知') {
+                                newchattext.classList.add('notify-text');
+                            } else if (data.chat[i].position.includes("A班")) {
+                                newchattext.classList.add('message-text-red');
+                            } else if (data.chat[i].position.includes("B班")) {
+                                newchattext.classList.add('message-text-blue');
+                            } else {
+                                newchattext.classList.add('message-text-red-blue');
+                            }
+                            newchattext.textContent = data.chat[i].chat
+                            newchat.appendChild(newchattext);
+                            chatbody.appendChild(newchat);
                         }
                         chat = data.chat;
                     }

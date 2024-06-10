@@ -348,7 +348,7 @@ wss.on('connection', (ws, req) => {
             ws.send(JSON.stringify({ type: "chat", success: false, message: "現在不是你的回合" }));
         } else if (data.type == "聊天") {
             if (room.includes(ws.room)) {
-                chat[ws.room].push({ chat: data.chat, id: ws.id, type: "聊天" });
+                chat[ws.room].push({ chat: data.chat, id: ws.id, type: "聊天", position: ws.position });
                 if (ifgaming[ws.room] > 0) {
                     clientlist[ws.room].forEach(function (client) {
                         client.send(JSON.stringify({ type: "chat", success: true, chat: chat[ws.room], gamecard: gamecard[ws.room], ifgaming: ifgaming[ws.room], clientlist: clientlisttosend[ws.room] }));
@@ -448,7 +448,7 @@ wss.on('connection', (ws, req) => {
                                 chat[ws.room].push({ chat: "B班翻滿" + gamecard[ws.room].blueCount + "張考卷，B班獲勝！", id: clientlist[ws.room].filter(item => item.position == "B班老師")[0].id, type: "通知" });
                             }
                             if (ifgaming[ws.room] != 2 && gamecard[ws.room].bluewrongtimes > 0 && gamecard[ws.room].blueanswer.includes(data.flip)) {
-                                gamecard[ws.room].blueanswer=gamecard[ws.room].blueanswer.filter(item => item != data.flip);
+                                gamecard[ws.room].blueanswer = gamecard[ws.room].blueanswer.filter(item => item != data.flip);
                                 gamecard[ws.room].blueremain -= 1;
                                 if (gamecard[ws.room].blueremain <= 0) {
                                     gamecard[ws.room].bluewrongtimes = 0;
@@ -577,7 +577,7 @@ wss.on('connection', (ws, req) => {
                                 chat[ws.room].push({ chat: "A班翻滿" + gamecard[ws.room].redCount + "張考卷，A班獲勝！", id: clientlist[ws.room].filter(item => item.position == "A班老師")[0].id, type: "通知" });
                             }
                             if (ifgaming[ws.room] != 2 && gamecard[ws.room].redwrongtimes > 0 && gamecard[ws.room].redanswer.includes(data.flip)) {
-                                gamecard[ws.room].redanswer=gamecard[ws.room].redanswer.filter(item => item != data.flip);
+                                gamecard[ws.room].redanswer = gamecard[ws.room].redanswer.filter(item => item != data.flip);
                                 gamecard[ws.room].redremain -= 1;
                                 if (gamecard[ws.room].redremain <= 0) {
                                     gamecard[ws.room].redwrongtimes = 0;
@@ -709,7 +709,7 @@ wss.on('connection', (ws, req) => {
                                 chat[ws.room].push({ chat: "B班翻滿" + gamecard[ws.room].blueCount + "張考卷，B班獲勝！", id: clientlist[ws.room].filter(item => item.position == "B班老師")[0].id, type: "通知" });
                             }
                             if (ifgaming[ws.room] != 2 && gamecard[ws.room].bluewrongtimes > 0 && gamecard[ws.room].blueanswer.includes(data.flip)) {
-                                gamecard[ws.room].blueanswer=gamecard[ws.room].blueanswer.filter(item => item != data.flip);
+                                gamecard[ws.room].blueanswer = gamecard[ws.room].blueanswer.filter(item => item != data.flip);
                                 gamecard[ws.room].blueremain -= 1;
                                 if (gamecard[ws.room].blueremain <= 0) {
                                     gamecard[ws.room].bluewrongtimes = 0;
@@ -839,7 +839,7 @@ wss.on('connection', (ws, req) => {
                                 chat[ws.room].push({ chat: "A班翻滿" + gamecard[ws.room].redCount + "張考卷，A班獲勝！", id: clientlist[ws.room].filter(item => item.position == "A班老師")[0].id, type: "通知" });
                             }
                             if (ifgaming[ws.room] != 2 && gamecard[ws.room].redwrongtimes > 0 && gamecard[ws.room].redanswer.includes(data.flip)) {
-                                gamecard[ws.room].redanswer=gamecard[ws.room].redanswer.filter(item => item != data.flip);
+                                gamecard[ws.room].redanswer = gamecard[ws.room].redanswer.filter(item => item != data.flip);
                                 gamecard[ws.room].redremain -= 1;
                                 if (gamecard[ws.room].redremain <= 0) {
                                     gamecard[ws.room].redwrongtimes = 0;

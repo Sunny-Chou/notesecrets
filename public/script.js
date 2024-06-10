@@ -8,7 +8,6 @@ const cardContainer = document.getElementById('cardContainer');
 const promptCardButton = document.getElementById('promptCardButton');
 const dialog = document.getElementById('dialog');
 const closeDialog = document.getElementById('closeDialog');
-const revealButton = document.getElementById('revealButton');
 const dialogText = document.getElementById('dialogText');
 const promptDialog = document.getElementById('promptDialog');
 const closePromptDialog = document.getElementById('closePromptDialog');
@@ -32,7 +31,6 @@ const replay = document.getElementById("replay");
 let selectedPrompts = [];
 let selectedCards = [];
 let selectedCardsName = [];
-let currentCard = null;
 let redCardsTotal = 0;
 let blueCardsTotal = 0;
 let redCardsRevealed = 0;
@@ -41,8 +39,8 @@ const ws = new WebSocket('wss://notesecrets.onrender.com');
 ws.onopen = function (event) {
     if (sessionStorage.getItem('room') && sessionStorage.getItem('id')) {
         ws.send(JSON.stringify({ type: "更新教室", room: sessionStorage.getItem('room'), id: sessionStorage.getItem('id') }));
-    }else{
-        window.location.href="index.html";
+    } else {
+        window.location.href = "index.html";
     }
 }
 ws.onmessage = function (event) {
@@ -99,22 +97,25 @@ ws.onmessage = function (event) {
                         }
                         if (gamecard.fliped[index]) {
                             card.classList.add('fliped');
-                        }
-                        card.addEventListener('click', () => {
-                            dialogText.textContent = hiddenText;
-                            if (gamecard.colors[index] == "red" && yourturn && !gamecard.fliped[index]) {
-                                revealButton.classList.remove("hidden");
-                                if (card.classList.contains("selected")) {
-                                    revealButton.textContent = "取消選擇";
-                                } else {
-                                    revealButton.textContent = "選擇";
+                            card.addEventListener('click', () => {
+                                dialogText.textContent = hiddenText;
+                                dialog.style.display = 'flex';
+                            });
+                        } else {
+                            card.addEventListener('click', function () {
+                                if (gamecard.colors[this.dataset.index] == "red" && yourturn) {
+                                    if (this.classList.contains("selected")) {
+                                        this.classList.remove("selected");
+                                        selectedCards = selectedCards.filter(item => item != this.dataset.index);
+                                        selectedCardsName = selectedCardsName.filter(item => item != this.textContent);
+                                    } else {
+                                        this.classList.add("selected");
+                                        selectedCards.push(this.dataset.index);
+                                        selectedCardsName.push(this.textContent);
+                                    }
                                 }
-                            } else {
-                                revealButton.classList.add("hidden");
-                            }
-                            dialog.style.display = 'flex';
-                            currentCard = card;
-                        });
+                            });
+                        }
                         cardContainer.appendChild(card);
                     });
                     promptButtonsContainer.innerHTML = "";
@@ -175,22 +176,25 @@ ws.onmessage = function (event) {
                         }
                         if (gamecard.fliped[index]) {
                             card.classList.add('fliped');
-                        }
-                        card.addEventListener('click', () => {
-                            dialogText.textContent = hiddenText;
-                            if (gamecard.colors[index] == "blue" && yourturn && !gamecard.fliped[index]) {
-                                revealButton.classList.remove("hidden");
-                                if (card.classList.contains("selected")) {
-                                    revealButton.textContent = "取消選擇";
-                                } else {
-                                    revealButton.textContent = "選擇";
+                            card.addEventListener('click', () => {
+                                dialogText.textContent = hiddenText;
+                                dialog.style.display = 'flex';
+                            });
+                        } else {
+                            card.addEventListener('click', function () {
+                                if (gamecard.colors[this.dataset.index] == "blue" && yourturn) {
+                                    if (this.classList.contains("selected")) {
+                                        this.classList.remove("selected");
+                                        selectedCards = selectedCards.filter(item => item != this.dataset.index);
+                                        selectedCardsName = selectedCardsName.filter(item => item != this.textContent);
+                                    } else {
+                                        this.classList.add("selected");
+                                        selectedCards.push(this.dataset.index);
+                                        selectedCardsName.push(this.textContent);
+                                    }
                                 }
-                            } else {
-                                revealButton.classList.add("hidden");
-                            }
-                            dialog.style.display = 'flex';
-                            currentCard = card;
-                        });
+                            });
+                        }
                         cardContainer.appendChild(card);
                     });
                     promptButtonsContainer.innerHTML = "";
@@ -257,23 +261,25 @@ ws.onmessage = function (event) {
                         const card = document.createElement('div');
                         card.classList.add('card');
                         card.dataset.index = index;
+                        card.textContent = visibleText;
                         if (gamecard.fliped[index]) {
                             card.classList.add('card-' + gamecard.colors[index]);
                             card.classList.add('fliped');
+                            card.addEventListener('click', () => {
+                                dialogText.textContent = hiddenText;
+                                dialog.style.display = 'flex';
+                            });
                         } else {
                             card.classList.add('card-white');
+                            card.addEventListener('click', () => {
+                                if (yourturn) {
+                                    const confirmSelection = confirm("你是否翻開" + card.textContent + "？");
+                                    if (confirmSelection) {
+                                        ws.send(JSON.stringify({ type: "答題", flip: card.dataset.index }));
+                                    }
+                                }
+                            });
                         }
-                        card.textContent = visibleText;
-                        card.addEventListener('click', () => {
-                            if (yourturn && !gamecard.fliped[index]) {
-                                revealButton.classList.remove("hidden");
-                            } else {
-                                revealButton.classList.add("hidden");
-                            }
-                            dialogText.textContent = hiddenText;
-                            dialog.style.display = 'flex';
-                            currentCard = card;
-                        });
                         cardContainer.appendChild(card);
                     });
                 } else if (position == "B班學生") {
@@ -315,23 +321,25 @@ ws.onmessage = function (event) {
                         const card = document.createElement('div');
                         card.classList.add('card');
                         card.dataset.index = index;
+                        card.textContent = visibleText;
                         if (gamecard.fliped[index]) {
                             card.classList.add('card-' + gamecard.colors[index]);
                             card.classList.add('fliped');
+                            card.addEventListener('click', () => {
+                                dialogText.textContent = hiddenText;
+                                dialog.style.display = 'flex';
+                            });
                         } else {
                             card.classList.add('card-white');
+                            card.addEventListener('click', () => {
+                                if (yourturn) {
+                                    const confirmSelection = confirm("你是否翻開" + card.textContent + "？");
+                                    if (confirmSelection) {
+                                        ws.send(JSON.stringify({ type: "答題", flip: card.dataset.index }));
+                                    }
+                                }
+                            });
                         }
-                        card.textContent = visibleText;
-                        card.addEventListener('click', () => {
-                            if (yourturn && !gamecard.fliped[index]) {
-                                revealButton.classList.remove("hidden");
-                            } else {
-                                revealButton.classList.add("hidden");
-                            }
-                            dialogText.textContent = hiddenText;
-                            dialog.style.display = 'flex';
-                            currentCard = card;
-                        });
                         cardContainer.appendChild(card);
                     });
                 } else if (position == "學生") {
@@ -384,23 +392,25 @@ ws.onmessage = function (event) {
                         const card = document.createElement('div');
                         card.classList.add('card');
                         card.dataset.index = index;
+                        card.textContent = visibleText;
                         if (gamecard.fliped[index]) {
                             card.classList.add('card-' + gamecard.colors[index]);
                             card.classList.add('fliped');
+                            card.addEventListener('click', () => {
+                                dialogText.textContent = hiddenText;
+                                dialog.style.display = 'flex';
+                            });
                         } else {
                             card.classList.add('card-white');
+                            card.addEventListener('click', () => {
+                                if (yourturn) {
+                                    const confirmSelection = confirm("你是否翻開" + card.textContent + "？");
+                                    if (confirmSelection) {
+                                        ws.send(JSON.stringify({ type: "答題", flip: card.dataset.index }));
+                                    }
+                                }
+                            });
                         }
-                        card.textContent = visibleText;
-                        card.addEventListener('click', () => {
-                            if (yourturn && !gamecard.fliped[index]) {
-                                revealButton.classList.remove("hidden");
-                            } else {
-                                revealButton.classList.add("hidden");
-                            }
-                            dialogText.textContent = hiddenText;
-                            dialog.style.display = 'flex';
-                            currentCard = card;
-                        });
                         cardContainer.appendChild(card);
                     });
                 }
@@ -415,30 +425,27 @@ ws.onmessage = function (event) {
             if (data.chat) {
                 const chatbody = document.getElementById('chat-body');
                 for (var i = chat.length; i < data.chat.length; i++) {
+                    var newchat = document.createElement('div');
                     if (data.chat[i].id != sessionStorage.getItem("id")) {
-                        var newchat = document.createElement('div');
                         newchat.classList.add('message');
                         newchat.textContent = data.chat[i].id + "：";
-                        var newchattext = document.createElement('div');
-                        newchattext.classList.add('message-text');
-                        if (data.chat[i].type == '通知') {
-                            newchattext.classList.add('notify');
-                        }
-                        newchattext.textContent = data.chat[i].chat
-                        newchat.appendChild(newchattext);
-                        chatbody.appendChild(newchat);
                     } else {
                         var newchat = document.createElement('div');
                         newchat.classList.add('message-right');
-                        var newchattext = document.createElement('div');
-                        newchattext.classList.add('message-text-right');
-                        if (data.chat[i].type == '通知') {
-                            newchattext.classList.add('notify-right');
-                        }
-                        newchattext.textContent = data.chat[i].chat
-                        newchat.appendChild(newchattext);
-                        chatbody.appendChild(newchat);
                     }
+                    var newchattext = document.createElement('div');
+                    if (data.chat[i].type == '通知') {
+                        newchattext.classList.add('notify-text');
+                    } else if (data.chat[i].position.includes("A班")) {
+                        newchattext.classList.add('message-text-red');
+                    } else if (data.chat[i].position.includes("B班")) {
+                        newchattext.classList.add('message-text-blue');
+                    } else {
+                        newchattext.classList.add('message-text-red-blue');
+                    }
+                    newchattext.textContent = data.chat[i].chat
+                    newchat.appendChild(newchattext);
+                    chatbody.appendChild(newchat);
                 }
                 chat = data.chat;
             }
@@ -483,22 +490,25 @@ ws.onmessage = function (event) {
                         }
                         if (gamecard.fliped[index]) {
                             card.classList.add('fliped');
-                        }
-                        card.addEventListener('click', () => {
-                            dialogText.textContent = hiddenText;
-                            if (gamecard.colors[index] == "red" && yourturn && !gamecard.fliped[index]) {
-                                revealButton.classList.remove("hidden");
-                                if (card.classList.contains("selected")) {
-                                    revealButton.textContent = "取消選擇";
-                                } else {
-                                    revealButton.textContent = "選擇";
+                            card.addEventListener('click', () => {
+                                dialogText.textContent = hiddenText;
+                                dialog.style.display = 'flex';
+                            });
+                        } else {
+                            card.addEventListener('click', function () {
+                                if (gamecard.colors[this.dataset.index] == "red" && yourturn) {
+                                    if (this.classList.contains("selected")) {
+                                        this.classList.remove("selected");
+                                        selectedCards = selectedCards.filter(item => item != this.dataset.index);
+                                        selectedCardsName = selectedCardsName.filter(item => item != this.textContent);
+                                    } else {
+                                        this.classList.add("selected");
+                                        selectedCards.push(this.dataset.index);
+                                        selectedCardsName.push(this.textContent);
+                                    }
                                 }
-                            } else {
-                                revealButton.classList.add("hidden");
-                            }
-                            dialog.style.display = 'flex';
-                            currentCard = card;
-                        });
+                            });
+                        }
                         cardContainer.appendChild(card);
                     });
                 } else if (position == "B班老師") {
@@ -527,23 +537,25 @@ ws.onmessage = function (event) {
                         }
                         if (gamecard.fliped[index]) {
                             card.classList.add('fliped');
-                        }
-                        card.addEventListener('click', () => {
-                            dialogText.textContent = hiddenText;
-                            revealButton.classList.remove("hidden");
-                            if (gamecard.colors[index] == "blue" && yourturn && !gamecard.fliped[index]) {
-                                revealButton.classList.remove("hidden");
-                                if (card.classList.contains("selected")) {
-                                    revealButton.textContent = "取消選擇";
-                                } else {
-                                    revealButton.textContent = "選擇";
+                            card.addEventListener('click', () => {
+                                dialogText.textContent = hiddenText;
+                                dialog.style.display = 'flex';
+                            });
+                        } else {
+                            card.addEventListener('click', function () {
+                                if (gamecard.colors[this.dataset.index] == "blue" && yourturn) {
+                                    if (this.classList.contains("selected")) {
+                                        this.classList.remove("selected");
+                                        selectedCards = selectedCards.filter(item => item != this.dataset.index);
+                                        selectedCardsName = selectedCardsName.filter(item => item != this.textContent);
+                                    } else {
+                                        this.classList.add("selected");
+                                        selectedCards.push(this.dataset.index);
+                                        selectedCardsName.push(this.textContent);
+                                    }
                                 }
-                            } else {
-                                revealButton.classList.add("hidden");
-                            }
-                            dialog.style.display = 'flex';
-                            currentCard = card;
-                        });
+                            });
+                        }
                         cardContainer.appendChild(card);
                     });
                 } else if (position == "A班學生") {
@@ -565,23 +577,25 @@ ws.onmessage = function (event) {
                         const card = document.createElement('div');
                         card.classList.add('card');
                         card.dataset.index = index;
+                        card.textContent = visibleText;
                         if (gamecard.fliped[index]) {
                             card.classList.add('card-' + gamecard.colors[index]);
                             card.classList.add('fliped');
+                            card.addEventListener('click', () => {
+                                dialogText.textContent = hiddenText;
+                                dialog.style.display = 'flex';
+                            });
                         } else {
                             card.classList.add('card-white');
+                            card.addEventListener('click', () => {
+                                if (yourturn) {
+                                    const confirmSelection = confirm("你是否翻開" + card.textContent + "？");
+                                    if (confirmSelection) {
+                                        ws.send(JSON.stringify({ type: "答題", flip: card.dataset.index }));
+                                    }
+                                }
+                            });
                         }
-                        card.textContent = visibleText;
-                        card.addEventListener('click', () => {
-                            if (yourturn && !gamecard.fliped[index]) {
-                                revealButton.classList.remove("hidden");
-                            } else {
-                                revealButton.classList.add("hidden");
-                            }
-                            dialogText.textContent = hiddenText;
-                            dialog.style.display = 'flex';
-                            currentCard = card;
-                        });
                         cardContainer.appendChild(card);
                     });
                 } else if (position == "B班學生") {
@@ -603,23 +617,25 @@ ws.onmessage = function (event) {
                         const card = document.createElement('div');
                         card.classList.add('card');
                         card.dataset.index = index;
+                        card.textContent = visibleText;
                         if (gamecard.fliped[index]) {
                             card.classList.add('card-' + gamecard.colors[index]);
                             card.classList.add('fliped');
+                            card.addEventListener('click', () => {
+                                dialogText.textContent = hiddenText;
+                                dialog.style.display = 'flex';
+                            });
                         } else {
                             card.classList.add('card-white');
+                            card.addEventListener('click', () => {
+                                if (yourturn) {
+                                    const confirmSelection = confirm("你是否翻開" + card.textContent + "？");
+                                    if (confirmSelection) {
+                                        ws.send(JSON.stringify({ type: "答題", flip: card.dataset.index }));
+                                    }
+                                }
+                            });
                         }
-                        card.textContent = visibleText;
-                        card.addEventListener('click', () => {
-                            if (yourturn && !gamecard.fliped[index]) {
-                                revealButton.classList.remove("hidden");
-                            } else {
-                                revealButton.classList.add("hidden");
-                            }
-                            dialogText.textContent = hiddenText;
-                            dialog.style.display = 'flex';
-                            currentCard = card;
-                        });
                         cardContainer.appendChild(card);
                     });
                 } else if (position == "學生") {
@@ -645,23 +661,25 @@ ws.onmessage = function (event) {
                         const card = document.createElement('div');
                         card.classList.add('card');
                         card.dataset.index = index;
+                        card.textContent = visibleText;
                         if (gamecard.fliped[index]) {
                             card.classList.add('card-' + gamecard.colors[index]);
                             card.classList.add('fliped');
+                            card.addEventListener('click', () => {
+                                dialogText.textContent = hiddenText;
+                                dialog.style.display = 'flex';
+                            });
                         } else {
                             card.classList.add('card-white');
+                            card.addEventListener('click', () => {
+                                if (yourturn) {
+                                    const confirmSelection = confirm("你是否翻開" + card.textContent + "？");
+                                    if (confirmSelection) {
+                                        ws.send(JSON.stringify({ type: "答題", flip: card.dataset.index }));
+                                    }
+                                }
+                            });
                         }
-                        card.textContent = visibleText;
-                        card.addEventListener('click', () => {
-                            if (yourturn && !gamecard.fliped[index]) {
-                                revealButton.classList.remove("hidden");
-                            } else {
-                                revealButton.classList.add("hidden");
-                            }
-                            dialogText.textContent = hiddenText;
-                            dialog.style.display = 'flex';
-                            currentCard = card;
-                        });
                         cardContainer.appendChild(card);
                     });
                 }
@@ -676,30 +694,27 @@ ws.onmessage = function (event) {
             if (data.chat) {
                 const chatbody = document.getElementById('chat-body');
                 for (var i = chat.length; i < data.chat.length; i++) {
+                    var newchat = document.createElement('div');
                     if (data.chat[i].id != sessionStorage.getItem("id")) {
-                        var newchat = document.createElement('div');
                         newchat.classList.add('message');
                         newchat.textContent = data.chat[i].id + "：";
-                        var newchattext = document.createElement('div');
-                        newchattext.classList.add('message-text');
-                        if (data.chat[i].type == '通知') {
-                            newchattext.classList.add('notify');
-                        }
-                        newchattext.textContent = data.chat[i].chat
-                        newchat.appendChild(newchattext);
-                        chatbody.appendChild(newchat);
                     } else {
                         var newchat = document.createElement('div');
                         newchat.classList.add('message-right');
-                        var newchattext = document.createElement('div');
-                        newchattext.classList.add('message-text-right');
-                        if (data.chat[i].type == '通知') {
-                            newchattext.classList.add('notify-right');
-                        }
-                        newchattext.textContent = data.chat[i].chat
-                        newchat.appendChild(newchattext);
-                        chatbody.appendChild(newchat);
                     }
+                    var newchattext = document.createElement('div');
+                    if (data.chat[i].type == '通知') {
+                        newchattext.classList.add('notify-text');
+                    } else if (data.chat[i].position.includes("A班")) {
+                        newchattext.classList.add('message-text-red');
+                    } else if (data.chat[i].position.includes("B班")) {
+                        newchattext.classList.add('message-text-blue');
+                    } else {
+                        newchattext.classList.add('message-text-red-blue');
+                    }
+                    newchattext.textContent = data.chat[i].chat
+                    newchat.appendChild(newchattext);
+                    chatbody.appendChild(newchat);
                 }
                 chat = data.chat;
             }
@@ -723,10 +738,10 @@ ws.onmessage = function (event) {
     } else if (data.type.includes(".html")) {
         alert(data.message);
         window.location.href = data.type;
-    } else if(!data.success){
+    } else if (!data.success) {
         alert(data.message);
-    }else if(data.type=="join"){
-        window.location.href="waiting.html";
+    } else if (data.type == "join") {
+        window.location.href = "waiting.html";
     }
 }
 
@@ -742,7 +757,6 @@ promptCardButton.addEventListener('click', () => {
 // Close main dialog
 closeDialog.addEventListener('click', () => {
     dialog.style.display = 'none';
-    currentCard = null;
 });
 
 closePromptDialog.addEventListener('click', () => {
@@ -782,28 +796,10 @@ submitBtn.addEventListener('click', (event) => {
         const answer = selectedChoice.value;
         quizDialog.close();
         ws.send(JSON.stringify({ type: "回答", answer: answer }));
-        quizForm.reset();
+        selectedChoice.checked = false;
     } else {
         alert('請選擇一個選項作為答案。');
     }
-});
-revealButton.addEventListener('click', () => {
-    if (currentCard) {
-        if (position.includes("老師") && yourturn) {
-            if (currentCard.classList.contains("selected")) {
-                currentCard.classList.remove("selected");
-                selectedCards = selectedCards.filter(item => item != currentCard.dataset.index);
-                selectedCardsName = selectedCardsName.filter(item => item != currentCard.textContent);
-            } else {
-                currentCard.classList.add("selected");
-                selectedCards.push(currentCard.dataset.index);
-                selectedCardsName.push(currentCard.textContent);
-            }
-        } else if (position.includes("學生") && yourturn) {
-            ws.send(JSON.stringify({ type: "答題", flip: currentCard.dataset.index }));
-        }
-    }
-    dialog.style.display = 'none';
 });
 function replays() {
     ws.send(JSON.stringify({ type: "重新考試" }));
