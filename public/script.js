@@ -89,9 +89,6 @@ ws.onmessage = function (event) {
                         card.dataset.index = index;
                         card.textContent = visibleText;
                         card.classList.add('card-' + gamecard.colors[index]);
-                        if (gamecard.redanswer.includes(index)) {
-                            card.classList.add('selected');
-                        }
                         if (gamecard.fliped[index]) {
                             card.classList.add('fliped');
                             card.addEventListener('click', () => {
@@ -99,6 +96,9 @@ ws.onmessage = function (event) {
                                 dialog.style.display = 'flex';
                             });
                         } else {
+                            if (gamecard.redanswer.includes(index.toString())) {
+                                card.classList.add('selected');
+                            }
                             card.addEventListener('click', function () {
                                 if (gamecard.colors[this.dataset.index] == "red" && yourturn) {
                                     if (this.classList.contains("selected")) {
@@ -163,9 +163,6 @@ ws.onmessage = function (event) {
                         card.dataset.index = index;
                         card.textContent = visibleText;
                         card.classList.add('card-' + gamecard.colors[index]);
-                        if (gamecard.redanswer.includes(index)) {
-                            card.classList.add('selected');
-                        }
                         if (gamecard.fliped[index]) {
                             card.classList.add('fliped');
                             card.addEventListener('click', () => {
@@ -173,6 +170,9 @@ ws.onmessage = function (event) {
                                 dialog.style.display = 'flex';
                             });
                         } else {
+                            if (gamecard.blueanswer.includes(index.toString())) {
+                                card.classList.add('selected');
+                            }
                             card.addEventListener('click', function () {
                                 if (gamecard.colors[this.dataset.index] == "blue" && yourturn) {
                                     if (this.classList.contains("selected")) {
@@ -472,9 +472,6 @@ ws.onmessage = function (event) {
                         card.dataset.index = index;
                         card.textContent = visibleText;
                         card.classList.add('card-' + gamecard.colors[index]);
-                        if (gamecard.redanswer.includes(index)) {
-                            card.classList.add('selected');
-                        }
                         if (gamecard.fliped[index]) {
                             card.classList.add('fliped');
                             card.addEventListener('click', () => {
@@ -482,6 +479,9 @@ ws.onmessage = function (event) {
                                 dialog.style.display = 'flex';
                             });
                         } else {
+                            if (gamecard.redanswer.includes(index.toString())) {
+                                card.classList.add('selected');
+                            }
                             card.addEventListener('click', function () {
                                 if (gamecard.colors[this.dataset.index] == "red" && yourturn) {
                                     if (this.classList.contains("selected")) {
@@ -515,9 +515,6 @@ ws.onmessage = function (event) {
                         card.dataset.index = index;
                         card.textContent = visibleText;
                         card.classList.add('card-' + gamecard.colors[index]);
-                        if (gamecard.redanswer.includes(index)) {
-                            card.classList.add('selected');
-                        }
                         if (gamecard.fliped[index]) {
                             card.classList.add('fliped');
                             card.addEventListener('click', () => {
@@ -525,6 +522,9 @@ ws.onmessage = function (event) {
                                 dialog.style.display = 'flex';
                             });
                         } else {
+                            if (gamecard.blueanswer.includes(index.toString())) {
+                                card.classList.add('selected');
+                            }
                             card.addEventListener('click', function () {
                                 if (gamecard.colors[this.dataset.index] == "blue" && yourturn) {
                                     if (this.classList.contains("selected")) {
