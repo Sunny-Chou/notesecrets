@@ -1240,7 +1240,7 @@ wss.on('connection', (ws, req) => {
                 if (clientlist[ws.room].length == 3) {
                     clientlist[ws.room][2].position = "學生";
                     clientlisttosend[ws.room][2].position = "學生";
-                } else if (clientlist[ws.room] % 2 != 0) {
+                } else if (clientlist[ws.room].length % 2 != 0) {
                     clientlist[ws.room][clientlist[ws.room].length - 1].position = "A班學生";
                     clientlisttosend[ws.room][clientlisttosend[ws.room].length - 1].position = "A班學生";
                 }
@@ -1258,7 +1258,7 @@ wss.on('connection', (ws, req) => {
                 if (clientlist[ws.room].length == 3) {
                     clientlist[ws.room][2].position = "學生";
                     clientlisttosend[ws.room][2].position = "學生";
-                } else if (clientlist[ws.room] % 2 == 0) {
+                } else if (clientlist[ws.room].length % 2 == 0) {
                     clientlist[ws.room][clientlist[ws.room].length - 1].position = "B班學生";
                     clientlisttosend[ws.room][clientlisttosend[ws.room].length - 1].position = "A班學生";
                 }
@@ -1430,7 +1430,7 @@ wss.on('connection', (ws, req) => {
                 if (clientlist[ws.room].length == 3) {
                     clientlist[ws.room][2].position = "學生";
                     clientlisttosend[ws.room][2].position = "學生";
-                } else if (clientlist[ws.room] % 2 != 0) {
+                } else if (clientlist[ws.room].length % 2 != 0) {
                     clientlist[ws.room][clientlist[ws.room].length - 1].position = "A班學生";
                     clientlisttosend[ws.room][clientlisttosend[ws.room].length - 1].position = "A班學生";
                 }
@@ -1448,7 +1448,7 @@ wss.on('connection', (ws, req) => {
                 if (clientlist[ws.room].length == 3) {
                     clientlist[ws.room][2].position = "學生";
                     clientlisttosend[ws.room][2].position = "學生";
-                } else if (clientlist[ws.room] % 2 == 0) {
+                } else if (clientlist[ws.room].length % 2 == 0) {
                     clientlist[ws.room][clientlist[ws.room].length - 1].position = "B班學生";
                     clientlisttosend[ws.room][clientlisttosend[ws.room].length - 1].position = "A班學生";
                 }
