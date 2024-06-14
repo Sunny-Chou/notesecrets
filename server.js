@@ -1205,14 +1205,12 @@ wss.on('connection', (ws, req) => {
                     clientlisttosend[ws.room][1] = clientlisttosend[ws.room][2];
                     clientlisttosend[ws.room][2] = temp2;
                     for (var i = 3; i < clientlist[ws.room].length - 1; i += 2) {
-                        if (clientlist[ws.room][i].position != "B班學生") {
-                            var temp = clientlist[ws.room][i];
-                            clientlist[ws.room][i] = clientlist[ws.room][i + 1];
-                            clientlist[ws.room][i + 1] = temp;
-                            var temp2 = clientlisttosend[ws.room][i];
-                            clientlisttosend[ws.room][i] = clientlisttosend[ws.room][i + 1];
-                            clientlisttosend[ws.room][i + 1] = temp2;
-                        }
+                        var temp = clientlist[ws.room][i];
+                        clientlist[ws.room][i] = clientlist[ws.room][i + 1];
+                        clientlist[ws.room][i + 1] = temp;
+                        var temp2 = clientlisttosend[ws.room][i];
+                        clientlisttosend[ws.room][i] = clientlisttosend[ws.room][i + 1];
+                        clientlisttosend[ws.room][i + 1] = temp2;
                     }
                 } else {
                     clientlist[ws.room][2].position = "B班老師";
@@ -1226,14 +1224,12 @@ wss.on('connection', (ws, req) => {
                     clientlisttosend[ws.room][1] = clientlisttosend[ws.room][2];
                     clientlisttosend[ws.room][2] = temp2;
                     for (var i = 3; i < clientlist[ws.room].length - 1; i += 2) {
-                        if (clientlist[ws.room][i].position != "B班學生") {
-                            var temp = clientlist[ws.room][i];
-                            clientlist[ws.room][i] = clientlist[ws.room][i + 1];
-                            clientlist[ws.room][i + 1] = temp;
-                            var temp2 = clientlisttosend[ws.room][i];
-                            clientlisttosend[ws.room][i] = clientlisttosend[ws.room][i + 1];
-                            clientlisttosend[ws.room][i + 1] = temp2;
-                        }
+                        var temp = clientlist[ws.room][i];
+                        clientlist[ws.room][i] = clientlist[ws.room][i + 1];
+                        clientlist[ws.room][i + 1] = temp;
+                        var temp2 = clientlisttosend[ws.room][i];
+                        clientlisttosend[ws.room][i] = clientlisttosend[ws.room][i + 1];
+                        clientlisttosend[ws.room][i + 1] = temp2;
                     }
                 }
             } else if (ws.position == "A班學生") {
@@ -1245,14 +1241,12 @@ wss.on('connection', (ws, req) => {
                     clientlisttosend[ws.room][clientlisttosend[ws.room].length - 1].position = "A班學生";
                 }
                 for (var i = 2; i < clientlist[ws.room].length - 1; i += 2) {
-                    if (clientlist[ws.room][i].position != "A班學生") {
                         var temp = clientlist[ws.room][i];
                         clientlist[ws.room][i] = clientlist[ws.room][i + 1];
                         clientlist[ws.room][i + 1] = temp;
                         var temp2 = clientlisttosend[ws.room][i];
                         clientlisttosend[ws.room][i] = clientlisttosend[ws.room][i + 1];
                         clientlisttosend[ws.room][i + 1] = temp2;
-                    }
                 }
             } else if (ws.position == "B班學生") {
                 if (clientlist[ws.room].length == 3) {
@@ -1263,14 +1257,12 @@ wss.on('connection', (ws, req) => {
                     clientlisttosend[ws.room][clientlisttosend[ws.room].length - 1].position = "B班學生";
                 }
                 for (var i = 3; i < clientlist[ws.room].length - 1; i += 2) {
-                    if (clientlist[ws.room][i].position != "B班學生") {
                         var temp = clientlist[ws.room][i];
                         clientlist[ws.room][i] = clientlist[ws.room][i + 1];
                         clientlist[ws.room][i + 1] = temp;
                         var temp2 = clientlisttosend[ws.room][i];
                         clientlisttosend[ws.room][i] = clientlisttosend[ws.room][i + 1];
                         clientlisttosend[ws.room][i + 1] = temp2;
-                    }
                 }
             }
             if (ws.owner) {
@@ -1395,14 +1387,12 @@ wss.on('connection', (ws, req) => {
                     clientlisttosend[ws.room][1] = clientlisttosend[ws.room][2];
                     clientlisttosend[ws.room][2] = temp2;
                     for (var i = 3; i < clientlist[ws.room].length - 1; i += 2) {
-                        if (clientlist[ws.room][i].position != "B班學生") {
                             var temp = clientlist[ws.room][i];
                             clientlist[ws.room][i] = clientlist[ws.room][i + 1];
                             clientlist[ws.room][i + 1] = temp;
                             var temp2 = clientlisttosend[ws.room][i];
                             clientlisttosend[ws.room][i] = clientlisttosend[ws.room][i + 1];
                             clientlisttosend[ws.room][i + 1] = temp2;
-                        }
                     }
                 } else {
                     clientlist[ws.room][2].position = "B班老師";
@@ -1416,14 +1406,12 @@ wss.on('connection', (ws, req) => {
                     clientlisttosend[ws.room][1] = clientlisttosend[ws.room][2];
                     clientlisttosend[ws.room][2] = temp2;
                     for (var i = 3; i < clientlist[ws.room].length - 1; i += 2) {
-                        if (clientlist[ws.room][i].position != "B班學生") {
                             var temp = clientlist[ws.room][i];
                             clientlist[ws.room][i] = clientlist[ws.room][i + 1];
                             clientlist[ws.room][i + 1] = temp;
                             var temp2 = clientlisttosend[ws.room][i];
                             clientlisttosend[ws.room][i] = clientlisttosend[ws.room][i + 1];
                             clientlisttosend[ws.room][i + 1] = temp2;
-                        }
                     }
                 }
             } else if (out[0].position == "A班學生") {
@@ -1435,14 +1423,12 @@ wss.on('connection', (ws, req) => {
                     clientlisttosend[ws.room][clientlisttosend[ws.room].length - 1].position = "A班學生";
                 }
                 for (var i = 2; i < clientlist[ws.room].length - 1; i += 2) {
-                    if (clientlist[ws.room][i].position != "A班學生") {
                         var temp = clientlist[ws.room][i];
                         clientlist[ws.room][i] = clientlist[ws.room][i + 1];
                         clientlist[ws.room][i + 1] = temp;
                         var temp2 = clientlisttosend[ws.room][i];
                         clientlisttosend[ws.room][i] = clientlisttosend[ws.room][i + 1];
                         clientlisttosend[ws.room][i + 1] = temp2;
-                    }
                 }
             } else if (out[0].position == "B班學生") {
                 if (clientlist[ws.room].length == 3) {
@@ -1453,14 +1439,12 @@ wss.on('connection', (ws, req) => {
                     clientlisttosend[ws.room][clientlisttosend[ws.room].length - 1].position = "B班學生";
                 }
                 for (var i = 3; i < clientlist[ws.room].length - 1; i += 2) {
-                    if (clientlist[ws.room][i].position != "B班學生") {
                         var temp = clientlist[ws.room][i];
                         clientlist[ws.room][i] = clientlist[ws.room][i + 1];
                         clientlist[ws.room][i + 1] = temp;
                         var temp2 = clientlisttosend[ws.room][i];
                         clientlisttosend[ws.room][i] = clientlisttosend[ws.room][i + 1];
                         clientlisttosend[ws.room][i + 1] = temp2;
-                    }
                 }
             }
             if (out[0].owner) {
